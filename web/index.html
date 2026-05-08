@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Audax Italiano Stats 2026</title>
+</head>
+<body>
+  <h1>Audax Italiano Stats</h1>
+  <p>Temporada 2026 — Estadísticas del equipo basadas en datos cargados manualmente.</p>
+  <p>Fuente de datos: data/audax-2026.csv</p>
+
+  <h2>Resumen general</h2>
+  <p>Partidos jugados: <span id="partidos">...</span></p>
+
+  <h2>Resultados</h2>
+  <p>Victorias: <span id="victorias">...</span></p>
+  <p>Empates: <span id="empates">...</span></p>
+  <p>Derrotas: <span id="derrotas">...</span></p>
+
+  <h2>Goles</h2>
+  <p>Goles a favor: <span id="goles-favor">...</span></p>
+  <p>Goles en contra: <span id="goles-contra">...</span></p>
+
+  <script>
+    fetch('../data/audax-2026.csv')
+      .then(function(response) { return response.text(); })
+      .then(function(text) {
+        var filas = text.trim().split('\n');
+        // La primera fila es el encabezado
+        var datos = filas.slice(1);
+
+        var victorias = 0, empates = 0, derrotas = 0;
+        var golesFavor = 0, golesContra = 0;
+
+        datos.forEach(function(fila) {
+          var columnas = fila.split(',');
+          var resultado = columnas[8].trim();
+          if (resultado === 'Victoria') victorias++;
+          else if (resultado === 'Empate') empates++;
+          else if (resultado === 'Derrota') derrotas++;
+          golesFavor += parseInt(columnas[6], 10);
+          golesContra += parseInt(columnas[7], 10);
+        });
+
+        document.getElementById('partidos').textContent = datos.length;
+        document.getElementById('victorias').textContent = victorias;
+        document.getElementById('empates').textContent = empates;
+        document.getElementById('derrotas').textContent = derrotas;
+        document.getElementById('goles-favor').textContent = golesFavor;
+        document.getElementById('goles-contra').textContent = golesContra;
+      });
+  </script>
+</body>
+</html>
