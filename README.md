@@ -11,12 +11,13 @@ https://lmzmatias.github.io/audax-italiano-stats/
 
 Proyecto personal que muestra estadísticas simples del Audax Italiano usando datos de partidos almacenados en un archivo CSV mantenido manualmente. El foco es la claridad de los datos y la exactitud de las estadísticas, no el diseño ni la automatización.
 
-## Alcance actual (v1.0)
+## Alcance actual (v1.2)
 
 - Un equipo: Audax Italiano
 - Una temporada: 2026
 - Página web estática sin frameworks ni librerías externas
 - Publicada mediante GitHub Pages
+- Diseño visual básico inspirado en los colores del club (verde y blanco, con acento rojo)
 
 ## Fuente de datos
 
@@ -34,4 +35,3 @@ Los datos se mantienen manualmente en el archivo `docs/data/audax-2026.csv`. Cad
 - Filtros por competición o fecha
 - Gráficos o visualizaciones
 - Actualización automática de datos
-- Diseño visual o estilos
