@@ -2,6 +2,11 @@
 
 Estadísticas básicas del Audax Italiano a partir de datos mantenidos manualmente en CSV.
 
+## Sitio web
+
+El sitio está publicado y disponible públicamente en GitHub Pages:
+https://lmzmatias.github.io/audax-italiano-stats/
+
 ## Descripción
 
 Proyecto personal que muestra estadísticas simples del Audax Italiano usando datos de partidos almacenados en un archivo CSV mantenido manualmente. El foco es la claridad de los datos y la exactitud de las estadísticas, no el diseño ni la automatización.
@@ -11,10 +16,11 @@ Proyecto personal que muestra estadísticas simples del Audax Italiano usando da
 - Un equipo: Audax Italiano
 - Una temporada: 2026
 - Página web estática sin frameworks ni librerías externas
+- Publicada mediante GitHub Pages
 
 ## Fuente de datos
 
-Los datos se mantienen manualmente en el archivo `data/audax-2026.csv`. Cada fila representa un partido e incluye fecha, competición, rival, goles y resultado.
+Los datos se mantienen manualmente en el archivo `docs/data/audax-2026.csv`. Cada fila representa un partido e incluye fecha, competición, rival, goles y resultado.
 
 ## Estadísticas que se muestran
 
@@ -29,13 +35,3 @@ Los datos se mantienen manualmente en el archivo `data/audax-2026.csv`. Cada fil
 - Gráficos o visualizaciones
 - Actualización automática de datos
 - Diseño visual o estilos
-
-## Cómo ver la página
-
-Servir el proyecto con cualquier servidor HTTP local y abrir `web/index.html` en el navegador. Ejemplo:
-
-```
-python -m http.server 8000
-```
-
-Luego abrir: `http://localhost:8000/web/index.html`
