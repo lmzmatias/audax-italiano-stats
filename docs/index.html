@@ -22,7 +22,7 @@
   <p>Goles en contra: <span id="goles-contra">...</span></p>
 
   <script>
-    fetch('../data/audax-2026.csv')
+    fetch('data/audax-2026.csv')
       .then(function(response) { return response.text(); })
       .then(function(text) {
         var filas = text.trim().split('\n');
