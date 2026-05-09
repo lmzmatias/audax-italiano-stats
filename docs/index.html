@@ -75,6 +75,46 @@
     .color-suspendido { color: #c0392b; }
     .color-sin-datos  { color: #aaaaaa; }
 
+    /* ── Eventos en vivo ──────────────────────────────────── */
+    #eventos-vivo {
+      margin-top: 14px;
+      border-top: 1px solid #d0e8d8;
+      padding-top: 10px;
+    }
+
+    .evento-vivo {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #444444;
+      margin: 0 0 4px;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .evento-vivo .ev-min {
+      font-weight: 700;
+      color: #888888;
+      min-width: 36px;
+      flex-shrink: 0;
+    }
+
+    .evento-vivo .ev-icon {
+      flex-shrink: 0;
+    }
+
+    .evento-vivo .ev-desc {
+      color: #444444;
+    }
+
+    .evento-vivo.ev-audax .ev-desc {
+      color: #1a6b2f;
+    }
+
+    .evento-vivo.ev-rival .ev-desc {
+      color: #8b1a1a;
+    }
+
     /* ── Partidos recientes ────────────────────────────────── */
     #recientes {
       margin-bottom: 8px;
@@ -147,6 +187,7 @@
     <p id="frase-principal" class="color-espera">Cargando datos...</p>
     <p id="marcador-principal"></p>
     <p id="estado-principal"></p>
+    <div id="eventos-vivo" style="display:none"></div>
   </div>
 
   <!-- Partidos recientes -->
@@ -213,6 +254,48 @@
       el.textContent = frase.texto;
     }
 
+    // ── Eventos en vivo ────────────────────────────────────────────
+    var ICONOS = {
+      goal:         '⚽',
+      penalty:      '⚽ (P)',
+      own_goal:     '⚽ (PP)',
+      yellow_card:  '🟨',
+      red_card:     '🟥',
+      substitution: '🔄',
+    };
+
+    function renderEventos(eventos) {
+      var el = document.getElementById('eventos-vivo');
+      el.innerHTML = '';
+      if (!eventos || eventos.length === 0) { el.style.display = 'none'; return; }
+
+      // Mostrar solo goles y tarjetas (no cambios, para no saturar)
+      var relevantes = eventos.filter(function(e) {
+        return e.type === 'goal' || e.type === 'penalty' || e.type === 'own_goal' ||
+               e.type === 'yellow_card' || e.type === 'red_card';
+      });
+
+      if (relevantes.length === 0) { el.style.display = 'none'; return; }
+
+      relevantes.forEach(function(e) {
+        var minStr = e.extra ? e.minute + '+' + e.extra + "'" : e.minute + "'";
+        var icono  = ICONOS[e.type] || '•';
+        var jugador = e.player || '—';
+        var asist   = (e.type === 'goal' || e.type === 'penalty') && e.assist ? ' (asist: ' + e.assist + ')' : '';
+        var equipo  = e.is_audax ? 'ev-audax' : 'ev-rival';
+
+        var div = document.createElement('div');
+        div.className = 'evento-vivo ' + equipo;
+        div.innerHTML =
+          '<span class="ev-min">' + minStr + '</span>' +
+          '<span class="ev-icon">' + icono + '</span>' +
+          '<span class="ev-desc">' + jugador + asist + '</span>';
+        el.appendChild(div);
+      });
+
+      el.style.display = 'block';
+    }
+
     function crearBloqueReciente(partido) {
       var f = frasePartido(partido, false);
       var div = document.createElement('div');
@@ -246,6 +329,7 @@
           setFrase('frase-principal', f);
           document.getElementById('marcador-principal').textContent = marcador(data.live);
           document.getElementById('estado-principal').textContent   = estadoTexto(data.live);
+          renderEventos(data.live.events);
 
         } else if (ultimo) {
           var horas = horasDesde(ultimo.date);

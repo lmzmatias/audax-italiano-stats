@@ -1,11 +1,90 @@
 {
   "live": {
+    "fixture_id": 1540092,
     "rival": "D. La Serena",
+    "home": "D. La Serena",
+    "away": "A. Italiano",
     "score_audax": 2,
     "score_rival": 2,
     "result": "LIVE",
     "status": "LIVE",
-    "elapsed": 45,
+    "status_long": "Second Half",
+    "elapsed": 48,
+    "extra": null,
+    "events": [
+      {
+        "minute": 2,
+        "extra": null,
+        "type": "goal",
+        "player": "G. Escalante",
+        "assist": null,
+        "team": "D. La Serena",
+        "is_audax": false
+      },
+      {
+        "minute": 7,
+        "extra": null,
+        "type": "yellow_card",
+        "player": "I. Fuenzalida",
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      },
+      {
+        "minute": 8,
+        "extra": null,
+        "type": "yellow_card",
+        "player": null,
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      },
+      {
+        "minute": 24,
+        "extra": null,
+        "type": "goal",
+        "player": "I. Fuenzalida",
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      },
+      {
+        "minute": 36,
+        "extra": null,
+        "type": "goal",
+        "player": "N. Stefanelli",
+        "assist": "G. Escalante",
+        "team": "D. La Serena",
+        "is_audax": false
+      },
+      {
+        "minute": 45,
+        "extra": 2,
+        "type": "yellow_card",
+        "player": "A. Henriquez",
+        "assist": null,
+        "team": "D. La Serena",
+        "is_audax": false
+      },
+      {
+        "minute": 45,
+        "extra": 2,
+        "type": "yellow_card",
+        "player": "J. Orellana",
+        "assist": null,
+        "team": "D. La Serena",
+        "is_audax": false
+      },
+      {
+        "minute": 45,
+        "extra": 5,
+        "type": "goal",
+        "player": null,
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      }
+    ],
     "date": "2026-05-09"
   },
   "last": {

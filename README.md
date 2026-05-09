@@ -11,7 +11,7 @@ https://lmzmatias.github.io/audax-italiano-stats/
 
 Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaje directo e irónico. La home se enfoca en actualidad: partido en vivo, último resultado, o un mensaje de espera cuando no hay actividad reciente. Los datos se obtienen via SerpAPI y se publican como un archivo JSON actualizado manualmente.
 
-## Alcance actual (v2.2)
+## Alcance actual (v2.3)
 
 - Un equipo: Audax Italiano
 - Página web estática sin frameworks ni librerías externas
@@ -29,6 +29,12 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Partidos futuros filtrados automáticamente (no se muestran)
 - Hasta 6 partidos recientes reales (5 visibles + "ver más desgracias")
 
+### En vivo (v2.3)
+- Muestra goles ⚽, tarjetas amarillas 🟨 y rojas 🟥 con minuto y jugador
+- Eventos de Audax en verde, del rival en rojo oscuro
+- Asistencias incluidas cuando están disponibles
+- Datos desde `live.events` en `latest.json`
+
 ## Qué NO incluye este proyecto
 
 - Tabla de posiciones
@@ -36,7 +42,6 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Estadísticas históricas en la vista principal
 - Estadísticas por jugador
 - Filtros por competición o fecha
-- Actualización automática en tiempo real
 - Gráficos o visualizaciones
 
 ## Cómo actualizar los datos

@@ -78,13 +78,17 @@ def es_futuro(date_str):
 
 # ── API-Football: partido en vivo ──────────────────────────────────────────────
 
-def fetch_live(apifootball_key):
-    print("Consultando API-Football (en vivo)...")
-    url = f"https://v3.football.api-sports.io/fixtures?team={AUDAX_TEAM_ID}&live=all"
-    data = http_get_json(url, headers={
-        "x-apisports-key": apifootball_key,
+def apifootball_get(api_key, path):
+    url = f"https://v3.football.api-sports.io{path}"
+    return http_get_json(url, headers={
+        "x-apisports-key": api_key,
         "Accept": "application/json",
     })
+
+
+def fetch_live(apifootball_key):
+    print("Consultando API-Football (en vivo)...")
+    data = apifootball_get(apifootball_key, f"/fixtures?team={AUDAX_TEAM_ID}&live=all")
     if not data:
         return None
 
@@ -99,35 +103,72 @@ def fetch_live(apifootball_key):
         return None
 
     f = fixtures[0]
-    teams  = f.get("teams", {})
-    goals  = f.get("goals", {})
-    status = f.get("fixture", {}).get("status", {})
-    elapsed = status.get("elapsed")
+    fixture_id = f.get("fixture", {}).get("id")
+    teams      = f.get("teams", {})
+    goals      = f.get("goals", {})
+    status     = f.get("fixture", {}).get("status", {})
+    elapsed    = status.get("elapsed")
+    extra      = status.get("extra")
 
-    home_name = teams.get("home", {}).get("name", "")
-    away_name = teams.get("away", {}).get("name", "")
+    home_name  = teams.get("home", {}).get("name", "")
+    away_name  = teams.get("away", {}).get("name", "")
     home_goals = goals.get("home", 0) or 0
     away_goals = goals.get("away", 0) or 0
 
-    # Determinar cuál es Audax
     if "italiano" in home_name.lower() or "audax" in home_name.lower():
-        score_audax = home_goals
-        score_rival = away_goals
-        rival = away_name
+        score_audax, score_rival, rival = home_goals, away_goals, away_name
     else:
-        score_audax = away_goals
-        score_rival = home_goals
-        rival = home_name
+        score_audax, score_rival, rival = away_goals, home_goals, home_name
 
     print(f"  EN VIVO: {home_name} {home_goals}-{away_goals} {away_name} | {status.get('long')} {elapsed}'")
 
+    # Eventos del partido
+    events_parsed = []
+    data2 = apifootball_get(apifootball_key, f"/fixtures/events?fixture={fixture_id}")
+    if data2 and not data2.get("errors"):
+        for e in data2.get("response", []):
+            min_e   = e.get("time", {}).get("elapsed")
+            extra_e = e.get("time", {}).get("extra")
+            etype   = e.get("type", "")
+            detail  = e.get("detail", "")
+            player  = e.get("player", {}).get("name")
+            assist  = e.get("assist", {}).get("name")
+            team    = e.get("team", {}).get("name", "")
+            is_audax = "italiano" in team.lower() or "audax" in team.lower()
+
+            if etype == "Goal":
+                event_type = "own_goal" if detail == "Own Goal" else ("penalty" if detail == "Penalty" else "goal")
+            elif etype == "Card":
+                event_type = "yellow_card" if "Yellow" in detail else ("red_card" if "Red" in detail else "card")
+            elif etype == "subst":
+                event_type = "substitution"
+            else:
+                event_type = etype.lower()
+
+            events_parsed.append({
+                "minute":   min_e,
+                "extra":    extra_e,
+                "type":     event_type,
+                "player":   player,
+                "assist":   assist if assist else None,
+                "team":     team,
+                "is_audax": is_audax,
+            })
+        print(f"  Eventos: {len(events_parsed)}")
+
     return {
+        "fixture_id":  fixture_id,
         "rival":       rival,
+        "home":        home_name,
+        "away":        away_name,
         "score_audax": score_audax,
         "score_rival": score_rival,
         "result":      "LIVE",
         "status":      "LIVE",
+        "status_long": status.get("long", ""),
         "elapsed":     elapsed,
+        "extra":       extra,
+        "events":      events_parsed,
         "date":        str(date.today()),
     }
 
