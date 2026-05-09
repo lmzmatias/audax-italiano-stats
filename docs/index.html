@@ -310,7 +310,7 @@
       var grid = document.createElement('div');
       grid.className = 'eventos-grid';
 
-      filas.forEach(function(fila) {
+      filas.reverse().forEach(function(fila) {
         var minStr = fila.extra ? fila.minute + '+' + fila.extra + "'" : fila.minute + "'";
 
         // Cuántas sub-filas necesita este minuto (máx entre audax y rival)
