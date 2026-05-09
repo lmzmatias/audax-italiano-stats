@@ -23,7 +23,7 @@ import os
 import sys
 import time
 import argparse
-from datetime import date
+from datetime import date, datetime, timezone, timedelta
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
@@ -33,6 +33,15 @@ BASE_URL = "https://v3.football.api-sports.io"
 
 INTERVAL_LIVE    = 120  # 2 minutos — 2 requests/ciclo → ~90 requests/partido
 INTERVAL_NO_LIVE = 300  # 5 minutos cuando no hay partido
+INTERVAL_SLEEP   = 60   # 1 minuto de espera cuando estamos fuera de horario
+
+CHILE_TZ   = timezone(timedelta(hours=-4))
+HORA_INICIO = 12  # 12:00 hora Chile
+HORA_FIN    = 22  # 22:00 hora Chile
+
+
+def en_horario_activo():
+    return HORA_INICIO <= datetime.now(CHILE_TZ).hour < HORA_FIN
 
 
 def get_api_key(args):
@@ -192,6 +201,13 @@ def main():
 
     while True:
         now = time.strftime("%H:%M:%S")
+
+        # ── Fuera de horario: no consultar la API ──────────────────
+        if not en_horario_activo():
+            print(f"[{now}] Fuera de horario (12:00-22:00 Chile). Esperando {INTERVAL_SLEEP}s...")
+            time.sleep(INTERVAL_SLEEP)
+            continue
+
         live = fetch_live_with_events(api_key)
         requests_used += 2 if live else 1
 
@@ -202,7 +218,7 @@ def main():
             min_str = f"{live['elapsed']}+{live['extra']}'" if live.get("extra") else f"{live['elapsed']}'"
             goals_count = sum(1 for e in live["events"] if e["type"] in ("goal", "penalty", "own_goal"))
             cards_count = sum(1 for e in live["events"] if "card" in e["type"])
-            print(f"[{now}] EN VIVO {min_str} | {live['home']} {live['score_audax'] if live['home']==live['away'] else ''}{live['score_audax'] if 'italiano' in live['home'].lower() or 'audax' in live['home'].lower() else live['score_rival']}-{live['score_rival'] if 'italiano' in live['home'].lower() or 'audax' in live['home'].lower() else live['score_audax']} {live['away']} | goles:{goals_count} tarjetas:{cards_count} | req~{requests_used}")
+            print(f"[{now}] EN VIVO {min_str} | {live['home']} {live['score_audax'] if 'italiano' in live['home'].lower() or 'audax' in live['home'].lower() else live['score_rival']}-{live['score_rival'] if 'italiano' in live['home'].lower() or 'audax' in live['home'].lower() else live['score_audax']} {live['away']} | goles:{goals_count} tarjetas:{cards_count} | req~{requests_used}")
             save_json(current)
             time.sleep(INTERVAL_LIVE)
         else:

@@ -11,7 +11,7 @@ https://lmzmatias.github.io/audax-italiano-stats/
 
 Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaje directo e irónico. La home se enfoca en actualidad: partido en vivo, último resultado, o un mensaje de espera cuando no hay actividad reciente. Los datos se obtienen via SerpAPI y se publican como un archivo JSON actualizado manualmente.
 
-## Alcance actual (v2.3)
+## Alcance actual (v2.4)
 
 - Un equipo: Audax Italiano
 - Página web estática sin frameworks ni librerías externas
@@ -44,23 +44,47 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Filtros por competición o fecha
 - Gráficos o visualizaciones
 
-## Cómo actualizar los datos
+## Actualización automática (GitHub Actions) — recomendado
 
-### Una vez (manual)
+El workflow `.github/workflows/update-live.yml` corre automáticamente cada 5 minutos
+en los servidores de GitHub. No requiere tener nada corriendo en tu computador.
+
+### Lógica de actualización
+| Situación | Frecuencia de check a API-Football |
+|---|---|
+| Partido en vivo | Cada 5 min (cada ejecución del workflow) |
+| Sin partido, dentro de 12:00-22:00 | Cada 15 min |
+| Fuera de 12:00-22:00 hora Chile | Sin requests |
+| Historial (SerpAPI) | Cada 60 min dentro del horario |
+
+Consumo estimado: ~58 req/día con 1 partido → dentro del límite Free (100/día).
+
+### Configurar los secrets en GitHub
+
+1. Ir a **Settings → Secrets and variables → Actions** en el repositorio
+2. Agregar los siguientes secrets:
+
+| Secret | Valor |
+|---|---|
+| `APIFOOTBALL_KEY` | Tu API key de api-sports.io |
+| `SERPAPI_KEY` | Tu API key de SerpAPI |
+
+3. Hacer push del workflow (`.github/workflows/update-live.yml`) al repositorio
+4. El workflow se activa automáticamente. También se puede correr manualmente desde
+   **Actions → Update live data → Run workflow**
+
+### Actualización manual (desde tu computador)
+
+#### Una vez
 ```
 python scripts/update_latest.py --serpapi-key TU_SERPAPI_KEY --apifootball-key TU_APIFOOTBALL_KEY
 ```
 
-### Loop automático — historial cada 12h + en vivo al inicio
-```
-python scripts/update_latest.py --serpapi-key TU_SERPAPI_KEY --apifootball-key TU_APIFOOTBALL_KEY --loop
-```
-
-### Loop de en vivo — solo durante partidos (1 request/min a API-Football)
+#### Loop de en vivo (mientras tenés el computador abierto)
 ```
 python scripts/update_live.py --apifootball-key TU_APIFOOTBALL_KEY
 ```
-- Con partido en vivo: refresca cada 1 minuto
+- Con partido en vivo: refresca cada 2 minutos
 - Sin partido: chequea cada 5 minutos
 - Detener: Ctrl+C
 
@@ -68,5 +92,3 @@ python scripts/update_live.py --apifootball-key TU_APIFOOTBALL_KEY
 - **SerpAPI**: historial de partidos recientes
 - **API-Football (api-sports.io)**: partido en vivo en tiempo real
   - Audax Italiano ID: `2329` | Plan Free: 100 requests/día
-
-Luego hacer commit y push de `docs/data/latest.json`.

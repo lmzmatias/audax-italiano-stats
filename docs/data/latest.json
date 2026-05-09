@@ -4,12 +4,12 @@
     "rival": "D. La Serena",
     "home": "D. La Serena",
     "away": "A. Italiano",
-    "score_audax": 3,
+    "score_audax": 4,
     "score_rival": 2,
     "result": "LIVE",
     "status": "LIVE",
     "status_long": "Second Half",
-    "elapsed": 62,
+    "elapsed": 82,
     "extra": null,
     "events": [
       {
@@ -88,7 +88,16 @@
         "minute": 50,
         "extra": null,
         "type": "goal",
-        "player": null,
+        "player": "M. Fuentes",
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      },
+      {
+        "minute": 64,
+        "extra": null,
+        "type": "goal",
+        "player": "I. Fuenzalida",
         "assist": null,
         "team": "A. Italiano",
         "is_audax": true

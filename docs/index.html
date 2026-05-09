@@ -352,75 +352,97 @@
       return div;
     }
 
-    // ── Cargar latest.json ─────────────────────────────────────────
-    fetch('data/latest.json')
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        var esVivo   = !!data.live;
-        var ultimo   = data.last;
-        var anterior = data.previous;
-        // Construir lista de partidos FT (hasta 10)
-        var ftList = [];
-        if (ultimo)   ftList.push(ultimo);
-        if (anterior) ftList.push(anterior);
-        // Si el JSON tuviera más partidos en data.history, se agregarían aquí
-        if (data.history && Array.isArray(data.history)) {
-          data.history.forEach(function(p) { if (ftList.length < 10) ftList.push(p); });
-        }
+    // ── Renderizar datos ───────────────────────────────────────────
+    function renderDatos(data) {
+      document.getElementById('recientes').innerHTML = '';
+      document.getElementById('btn-expandir').style.display = 'none';
 
-        // ── Bloque principal ──
-        if (esVivo) {
-          var f = frasePartido(data.live, true);
-          setFrase('frase-principal', f);
-          document.getElementById('marcador-principal').textContent = marcador(data.live);
-          document.getElementById('estado-principal').textContent   = estadoTexto(data.live);
-          renderEventos(data.live.events);
+      var esVivo   = !!data.live;
+      var ultimo   = data.last;
+      var anterior = data.previous;
 
-        } else if (ultimo) {
-          var horas = horasDesde(ultimo.date);
-          if (horas <= 12) {
-            var f2 = frasePartido(ultimo, false);
-            setFrase('frase-principal', f2);
-            document.getElementById('marcador-principal').textContent = marcador(ultimo);
-            document.getElementById('estado-principal').textContent   = estadoTexto(ultimo);
-            // El último ya está en el principal, quitarlo de la lista de recientes
-            ftList = ftList.slice(1);
-          } else {
-            setFrase('frase-principal', { texto: fraseEspera(), clase: 'color-espera' });
-            document.getElementById('marcador-principal').textContent = '';
-            document.getElementById('estado-principal').textContent   = '';
-          }
+      var ftList = [];
+      if (ultimo)   ftList.push(ultimo);
+      if (anterior) ftList.push(anterior);
+      if (data.history && Array.isArray(data.history)) {
+        data.history.forEach(function(p) { if (ftList.length < 10) ftList.push(p); });
+      }
+
+      // ── Bloque principal ──
+      if (esVivo) {
+        var f = frasePartido(data.live, true);
+        setFrase('frase-principal', f);
+        document.getElementById('marcador-principal').textContent = marcador(data.live);
+        document.getElementById('estado-principal').textContent   = estadoTexto(data.live);
+        renderEventos(data.live.events);
+      } else if (ultimo) {
+        var horas = horasDesde(ultimo.date);
+        if (horas <= 12) {
+          var f2 = frasePartido(ultimo, false);
+          setFrase('frase-principal', f2);
+          document.getElementById('marcador-principal').textContent = marcador(ultimo);
+          document.getElementById('estado-principal').textContent   = estadoTexto(ultimo);
+          ftList = ftList.slice(1);
         } else {
-          setFrase('frase-principal', { texto: '¿De qué se cansan como para tener vacaciones?', clase: 'color-espera' });
+          setFrase('frase-principal', { texto: fraseEspera(), clase: 'color-espera' });
           document.getElementById('marcador-principal').textContent = '';
           document.getElementById('estado-principal').textContent   = '';
         }
-
-        // ── Partidos recientes ──
-        var recientesEl = document.getElementById('recientes');
-        var btnExpandir = document.getElementById('btn-expandir');
-        var VISIBLE = 5;
-
-        ftList.forEach(function(p, i) {
-          var bloque = crearBloqueReciente(p);
-          if (i >= VISIBLE) bloque.style.display = 'none';
-          recientesEl.appendChild(bloque);
-        });
-
-        if (ftList.length > VISIBLE) {
-          btnExpandir.style.display = 'inline-block';
-          btnExpandir.addEventListener('click', function() {
-            var ocultos = recientesEl.querySelectorAll('.partido-reciente');
-            ocultos.forEach(function(el) { el.style.display = ''; });
-            btnExpandir.style.display = 'none';
-          });
-        }
-      })
-      .catch(function() {
-        setFrase('frase-principal', { texto: 'No hay datos recientes, les pagan para nada.', clase: 'color-sin-datos' });
+      } else {
+        setFrase('frase-principal', { texto: '¿De qué se cansan como para tener vacaciones?', clase: 'color-espera' });
         document.getElementById('marcador-principal').textContent = '';
         document.getElementById('estado-principal').textContent   = '';
+      }
+
+      // ── Partidos recientes ──
+      var recientesEl = document.getElementById('recientes');
+      var btnExpandir = document.getElementById('btn-expandir');
+      var VISIBLE = 5;
+
+      ftList.forEach(function(p, i) {
+        var bloque = crearBloqueReciente(p);
+        if (i >= VISIBLE) bloque.style.display = 'none';
+        recientesEl.appendChild(bloque);
       });
+
+      if (ftList.length > VISIBLE) {
+        btnExpandir.style.display = 'inline-block';
+        btnExpandir.addEventListener('click', function() {
+          var ocultos = recientesEl.querySelectorAll('.partido-reciente');
+          ocultos.forEach(function(el) { el.style.display = ''; });
+          btnExpandir.style.display = 'none';
+        });
+      }
+    }
+
+    // ── Cargar latest.json ─────────────────────────────────────────
+    var HORA_INICIO = 12;
+    var HORA_FIN    = 22;
+
+    function enHorarioActivo() {
+      var h = new Date().getHours();
+      return h >= HORA_INICIO && h < HORA_FIN;
+    }
+
+    function cargarDatos() {
+      fetch('data/latest.json?_=' + Date.now())
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          renderDatos(data);
+          if (!enHorarioActivo()) return; // fuera de horario, no programar recarga
+          // Con partido en vivo: recargar cada 2 min
+          // Sin partido pero en horario: recargar cada 15 min (por si empieza uno)
+          var intervalo = data.live ? 120000 : 900000;
+          setTimeout(cargarDatos, intervalo);
+        })
+        .catch(function() {
+          setFrase('frase-principal', { texto: 'No hay datos recientes, les pagan para nada.', clase: 'color-sin-datos' });
+          document.getElementById('marcador-principal').textContent = '';
+          document.getElementById('estado-principal').textContent   = '';
+        });
+    }
+
+    cargarDatos();
   </script>
 </body>
 </html>
