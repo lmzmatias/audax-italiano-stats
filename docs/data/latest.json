@@ -1,5 +1,13 @@
 {
-  "live": null,
+  "live": {
+    "rival": "D. La Serena",
+    "score_audax": 1,
+    "score_rival": 2,
+    "result": "LIVE",
+    "status": "LIVE",
+    "elapsed": 45,
+    "date": "2026-05-09"
+  },
   "last": {
     "rival": "Vasco da Gama",
     "score_audax": 1,
@@ -23,7 +31,7 @@
       "score_rival": 2,
       "result": "Empate",
       "status": "FT",
-      "date": "Vie, 24-04"
+      "date": "24-04"
     },
     {
       "rival": "Huachipato",
@@ -50,5 +58,5 @@
       "date": "11-04"
     }
   ],
-  "updated_at": "2026-05-08"
+  "updated_at": "2026-05-09"
 }

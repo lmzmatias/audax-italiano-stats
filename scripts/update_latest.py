@@ -1,103 +1,155 @@
 """
 update_latest.py
-Consulta SerpAPI para obtener los resultados recientes del Audax Italiano
-y actualiza docs/data/latest.json.
+- API-Football (api-sports.io): partido en vivo en tiempo real
+- SerpAPI: historial de partidos recientes
+Actualiza docs/data/latest.json.
 
 Uso:
-    python scripts/update_latest.py --api-key TU_API_KEY
+    python scripts/update_latest.py --serpapi-key TU_KEY --apifootball-key TU_KEY
 
 Variables de entorno (alternativa):
-    SERPAPI_KEY=TU_API_KEY python scripts/update_latest.py
+    SERPAPI_KEY=... APIFOOTBALL_KEY=... python scripts/update_latest.py
 """
 
 import json
 import os
 import sys
 import argparse
+import re
 from datetime import date, datetime
-from urllib.request import urlopen
-from urllib.parse import urlencode
-from urllib.error import URLError
+from urllib.request import urlopen, Request
+from urllib.error import URLError, HTTPError
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "latest.json")
 MAX_HISTORY = 10
 
-# Queries a intentar en orden hasta obtener suficientes partidos
-QUERIES = [
+AUDAX_TEAM_ID = 2329  # A. Italiano en api-sports.io
+
+SERPAPI_QUERIES = [
     "Audax Italiano resultados 2026",
     "Audax Italiano partidos jugados",
     "Audax Italiano",
 ]
 
 
-def get_api_key(args):
-    key = args.api_key or os.environ.get("SERPAPI_KEY", "")
-    if not key:
-        print("ERROR: Se requiere una API key de SerpAPI.")
-        print("  Uso: python scripts/update_latest.py --api-key TU_KEY")
-        print("  O:   SERPAPI_KEY=TU_KEY python scripts/update_latest.py")
+# ── Helpers ────────────────────────────────────────────────────────────────────
+
+def get_api_keys(args):
+    serpapi_key = args.serpapi_key or os.environ.get("SERPAPI_KEY", "")
+    apifootball_key = args.apifootball_key or os.environ.get("APIFOOTBALL_KEY", "")
+    if not serpapi_key:
+        print("ERROR: Se requiere SERPAPI_KEY.")
         sys.exit(1)
-    return key
+    if not apifootball_key:
+        print("ERROR: Se requiere APIFOOTBALL_KEY.")
+        sys.exit(1)
+    return serpapi_key, apifootball_key
 
 
-def fetch_serpapi(api_key, query):
+def http_get_json(url, headers=None):
+    req = Request(url, headers=headers or {})
+    try:
+        with urlopen(req, timeout=10) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except HTTPError as e:
+        print(f"  HTTPError {e.code}: {e.reason}")
+        return None
+    except URLError as e:
+        print(f"  URLError: {e}")
+        return None
+
+
+def es_futuro(date_str):
+    today = date.today()
+    m = re.search(r"(\d{1,2})-(\d{2})$", date_str)
+    if m:
+        day, month = int(m.group(1)), int(m.group(2))
+        try:
+            return date(today.year, month, day) > today
+        except ValueError:
+            return False
+    for fmt in ("%Y-%m-%d", "%d/%m/%Y"):
+        try:
+            return datetime.strptime(date_str, fmt).date() > today
+        except ValueError:
+            continue
+    return False
+
+
+# ── API-Football: partido en vivo ──────────────────────────────────────────────
+
+def fetch_live(apifootball_key):
+    print("Consultando API-Football (en vivo)...")
+    url = f"https://v3.football.api-sports.io/fixtures?team={AUDAX_TEAM_ID}&live=all"
+    data = http_get_json(url, headers={
+        "x-apisports-key": apifootball_key,
+        "Accept": "application/json",
+    })
+    if not data:
+        return None
+
+    errors = data.get("errors", {})
+    if errors:
+        print("  API errors:", errors)
+        return None
+
+    fixtures = data.get("response", [])
+    if not fixtures:
+        print("  Sin partido en vivo.")
+        return None
+
+    f = fixtures[0]
+    teams  = f.get("teams", {})
+    goals  = f.get("goals", {})
+    status = f.get("fixture", {}).get("status", {})
+    elapsed = status.get("elapsed")
+
+    home_name = teams.get("home", {}).get("name", "")
+    away_name = teams.get("away", {}).get("name", "")
+    home_goals = goals.get("home", 0) or 0
+    away_goals = goals.get("away", 0) or 0
+
+    # Determinar cuál es Audax
+    if "italiano" in home_name.lower() or "audax" in home_name.lower():
+        score_audax = home_goals
+        score_rival = away_goals
+        rival = away_name
+    else:
+        score_audax = away_goals
+        score_rival = home_goals
+        rival = home_name
+
+    print(f"  EN VIVO: {home_name} {home_goals}-{away_goals} {away_name} | {status.get('long')} {elapsed}'")
+
+    return {
+        "rival":       rival,
+        "score_audax": score_audax,
+        "score_rival": score_rival,
+        "result":      "LIVE",
+        "status":      "LIVE",
+        "elapsed":     elapsed,
+        "date":        str(date.today()),
+    }
+
+
+# ── SerpAPI: historial ─────────────────────────────────────────────────────────
+
+def fetch_serpapi(serpapi_key, query):
+    from urllib.parse import urlencode
     params = urlencode({
         "q": query,
-        "api_key": api_key,
+        "api_key": serpapi_key,
         "engine": "google",
         "hl": "es",
         "gl": "cl",
     })
-    url = "https://serpapi.com/search.json?" + params
-    try:
-        with urlopen(url, timeout=10) as resp:
-            return json.loads(resp.read().decode("utf-8"))
-    except URLError as e:
-        print("ERROR al conectar con SerpAPI:", e)
-        sys.exit(1)
+    return http_get_json("https://serpapi.com/search.json?" + params)
 
 
-def es_futuro(date_str):
-    """
-    Devuelve True si la fecha del partido es posterior a hoy.
-    Soporta formatos: 'dd-mm', 'Lun, dd-mm', 'yyyy-mm-dd', 'd/m/yyyy'
-    """
-    today = date.today()
-    # Extraer solo la parte dd-mm si viene con día de semana
-    import re
-    m = re.search(r'(\d{1,2})-(\d{2})$', date_str)
-    if m:
-        day, month = int(m.group(1)), int(m.group(2))
-        try:
-            partido_date = date(today.year, month, day)
-            return partido_date > today
-        except ValueError:
-            return False
-    # Formato yyyy-mm-dd
-    try:
-        partido_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-        return partido_date > today
-    except ValueError:
-        pass
-    # Formato d/m/yyyy
-    try:
-        partido_date = datetime.strptime(date_str, "%d/%m/%Y").date()
-        return partido_date > today
-    except ValueError:
-        pass
-    return False
-
-
-def parse_sports_results(data):
-    """
-    Extrae partido en vivo y partidos terminados
-    desde la respuesta de SerpAPI (bloque sports_results).
-    """
+def parse_serpapi_games(data):
     sports = data.get("sports_results", {})
     games  = sports.get("games", [])
-
-    live_game = None
-    finished  = []
+    finished = []
 
     for g in games:
         status = g.get("status", "").upper()
@@ -105,11 +157,10 @@ def parse_sports_results(data):
         if len(teams) < 2:
             continue
 
-        audax_idx = None
-        for i, t in enumerate(teams):
-            if "audax" in t.get("name", "").lower():
-                audax_idx = i
-                break
+        audax_idx = next(
+            (i for i, t in enumerate(teams) if "audax" in t.get("name", "").lower() or "italiano" in t.get("name", "").lower()),
+            None
+        )
         if audax_idx is None:
             continue
 
@@ -128,8 +179,8 @@ def parse_sports_results(data):
             result_str = status
             status_out = status
         elif "LIVE" in status or "EN VIVO" in status:
-            result_str = "LIVE"
-            status_out = "LIVE"
+            # SerpAPI raramente detecta en vivo; lo ignoramos (usamos API-Football)
+            continue
         elif score_audax > score_rival:
             result_str = "Victoria"
             status_out = "FT"
@@ -140,65 +191,57 @@ def parse_sports_results(data):
             result_str = "Derrota"
             status_out = "FT"
 
-        entry = {
+        finished.append({
             "rival":       rival,
             "score_audax": score_audax,
             "score_rival": score_rival,
             "result":      result_str,
             "status":      status_out,
             "date":        match_date,
-        }
+        })
 
-        if status_out == "LIVE":
-            live_game = entry
-        else:
-            finished.append(entry)
-
-    return live_game, finished, len(games)
+    return finished
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Actualiza latest.json desde SerpAPI.")
-    parser.add_argument("--api-key", default="", help="API key de SerpAPI")
-    parser.add_argument("--debug", action="store_true", help="Mostrar respuesta cruda de SerpAPI")
-    args = parser.parse_args()
-
-    api_key = get_api_key(args)
-
-    live_game = None
+def fetch_history(serpapi_key):
     all_finished = []
 
-    for query in QUERIES:
+    for query in SERPAPI_QUERIES:
         print(f"Consultando SerpAPI: '{query}'...")
-        raw = fetch_serpapi(api_key, query)
+        raw = fetch_serpapi(serpapi_key, query)
+        if not raw:
+            continue
 
-        if args.debug:
-            sports = raw.get("sports_results", {})
-            print("  sports_results keys:", list(sports.keys()))
-            games = sports.get("games", [])
-            print(f"  games encontrados: {len(games)}")
-            for g in games:
-                print("   ", g.get("date"), g.get("status"), [t.get("name") for t in g.get("teams", [])])
+        finished = parse_serpapi_games(raw)
 
-        lv, finished, total = parse_sports_results(raw)
-        if lv:
-            live_game = lv
-        # SerpAPI devuelve del más antiguo al más reciente: invertir
         for p in reversed(finished):
-            # Ignorar partidos futuros
             if es_futuro(p["date"]):
                 print(f"  [ignorado futuro] {p['date']} vs {p['rival']}")
                 continue
-            # Evitar duplicados por rival+marcador
             key = (p["rival"], p["score_audax"], p["score_rival"])
             if not any((x["rival"], x["score_audax"], x["score_rival"]) == key for x in all_finished):
                 all_finished.append(p)
 
-        print(f"  >> {len(finished)} partidos FT encontrados (total acumulado: {len(all_finished)})")
+        print(f"  >> {len(finished)} partidos FT (acumulado: {len(all_finished)})")
         if len(all_finished) >= MAX_HISTORY:
             break
 
-    history = all_finished[:MAX_HISTORY]
+    return all_finished[:MAX_HISTORY]
+
+
+# ── Main ───────────────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description="Actualiza latest.json.")
+    parser.add_argument("--serpapi-key",     default="", help="API key de SerpAPI")
+    parser.add_argument("--apifootball-key", default="", help="API key de api-sports.io")
+    args = parser.parse_args()
+
+    serpapi_key, apifootball_key = get_api_keys(args)
+
+    live_game = fetch_live(apifootball_key)
+    history   = fetch_history(serpapi_key)
+
     last_game     = history[0] if len(history) > 0 else None
     previous_game = history[1] if len(history) > 1 else None
     extra_history = history[2:] if len(history) > 2 else []
@@ -218,7 +261,6 @@ def main():
     print("\nActualizado:", out_path)
     print("  live:    ", live_game)
     print("  last:    ", last_game)
-    print("  previous:", previous_game)
     print("  history: ", len(extra_history), "partidos adicionales")
     print("  updated: ", result["updated_at"])
 

@@ -42,7 +42,10 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 ## Cómo actualizar los datos recientes
 
 ```
-python scripts/update_latest.py --api-key TU_KEY
+python scripts/update_latest.py --serpapi-key TU_SERPAPI_KEY --apifootball-key TU_APIFOOTBALL_KEY
 ```
+
+- **SerpAPI**: historial de partidos recientes
+- **API-Football (api-sports.io)**: partido en vivo en tiempo real (Audax ID: 2329)
 
 Luego hacer commit y push de `docs/data/latest.json`.
