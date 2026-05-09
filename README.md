@@ -39,13 +39,29 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Actualización automática en tiempo real
 - Gráficos o visualizaciones
 
-## Cómo actualizar los datos recientes
+## Cómo actualizar los datos
 
+### Una vez (manual)
 ```
 python scripts/update_latest.py --serpapi-key TU_SERPAPI_KEY --apifootball-key TU_APIFOOTBALL_KEY
 ```
 
+### Loop automático — historial cada 12h + en vivo al inicio
+```
+python scripts/update_latest.py --serpapi-key TU_SERPAPI_KEY --apifootball-key TU_APIFOOTBALL_KEY --loop
+```
+
+### Loop de en vivo — solo durante partidos (1 request/min a API-Football)
+```
+python scripts/update_live.py --apifootball-key TU_APIFOOTBALL_KEY
+```
+- Con partido en vivo: refresca cada 1 minuto
+- Sin partido: chequea cada 5 minutos
+- Detener: Ctrl+C
+
+### APIs utilizadas
 - **SerpAPI**: historial de partidos recientes
-- **API-Football (api-sports.io)**: partido en vivo en tiempo real (Audax ID: 2329)
+- **API-Football (api-sports.io)**: partido en vivo en tiempo real
+  - Audax Italiano ID: `2329` | Plan Free: 100 requests/día
 
 Luego hacer commit y push de `docs/data/latest.json`.

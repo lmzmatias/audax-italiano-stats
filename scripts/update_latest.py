@@ -229,16 +229,10 @@ def fetch_history(serpapi_key):
     return all_finished[:MAX_HISTORY]
 
 
-# ── Main ───────────────────────────────────────────────────────────────────────
+HISTORY_INTERVAL = 12 * 60 * 60  # 12 horas en segundos
 
-def main():
-    parser = argparse.ArgumentParser(description="Actualiza latest.json.")
-    parser.add_argument("--serpapi-key",     default="", help="API key de SerpAPI")
-    parser.add_argument("--apifootball-key", default="", help="API key de api-sports.io")
-    args = parser.parse_args()
 
-    serpapi_key, apifootball_key = get_api_keys(args)
-
+def run_once(serpapi_key, apifootball_key):
     live_game = fetch_live(apifootball_key)
     history   = fetch_history(serpapi_key)
 
@@ -265,5 +259,32 @@ def main():
     print("  updated: ", result["updated_at"])
 
 
+# ── Main ───────────────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description="Actualiza latest.json.")
+    parser.add_argument("--serpapi-key",     default="", help="API key de SerpAPI")
+    parser.add_argument("--apifootball-key", default="", help="API key de api-sports.io")
+    parser.add_argument("--loop", action="store_true",
+                        help=f"Modo loop: actualiza historial cada {HISTORY_INTERVAL//3600}h automáticamente")
+    args = parser.parse_args()
+
+    serpapi_key, apifootball_key = get_api_keys(args)
+
+    if args.loop:
+        import time
+        print(f"Modo loop activo. Historial se actualiza cada {HISTORY_INTERVAL//3600}h. Ctrl+C para detener.")
+        while True:
+            run_once(serpapi_key, apifootball_key)
+            next_run = time.strftime("%H:%M:%S", time.localtime(time.time() + HISTORY_INTERVAL))
+            print(f"Próxima actualización de historial: {next_run}")
+            time.sleep(HISTORY_INTERVAL)
+    else:
+        run_once(serpapi_key, apifootball_key)
+
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nDetenido.")
