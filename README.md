@@ -1,37 +1,39 @@
 # audax-italiano-stats
 
-Estadísticas y estado actual del Audax Italiano, con datos actualizados manualmente.
+Estado actual del Audax Italiano, con tono editorial propio.
 
 ## Sitio web
 
-El sitio está publicado y disponible públicamente en GitHub Pages:
+Publicado en GitHub Pages:
 https://lmzmatias.github.io/audax-italiano-stats/
 
 ## Descripción
 
-Proyecto personal que muestra el estado actual y las estadísticas históricas del Audax Italiano. Los resultados recientes se obtienen via SerpAPI y se publican como un archivo JSON. Las estadísticas históricas se calculan desde un CSV mantenido manualmente.
+Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaje directo e irónico. La home se enfoca en actualidad: partido en vivo, último resultado, o un mensaje de espera cuando no hay actividad reciente. Los datos se obtienen via SerpAPI y se publican como un archivo JSON actualizado manualmente.
 
-## Alcance actual (v2.1)
+## Alcance actual (v2.2)
 
 - Un equipo: Audax Italiano
-- Una temporada: 2026
 - Página web estática sin frameworks ni librerías externas
 - Publicada mediante GitHub Pages
-- Diseño visual responsive inspirado en los colores del club
+- Fuente tipográfica: Inter
+- Diseño responsive inspirado en los colores del club
 
-### Bloque principal (datos recientes)
-- Muestra el partido en vivo si existe, o el último partido jugado
-- Incluye un mensaje contextual según el resultado
-- Datos obtenidos desde `docs/data/latest.json`, actualizado con SerpAPI
-
-### Estadísticas históricas (CSV)
-- Partidos jugados, victorias, empates, derrotas
-- Goles a favor y goles en contra
-- Datos desde `docs/data/audax-2026.csv`, mantenido manualmente
+### Home (actualidad)
+- Muestra el partido en vivo si existe
+- Si no hay partido en vivo y han pasado ≤12h desde el último: muestra el resultado con su mensaje irónico
+- Si han pasado >12h: muestra un mensaje de espera rotativo
+- Debajo del bloque principal: hasta 10 partidos recientes (5 visibles, expandibles)
+- El color del mensaje indica el estado: verde (ganando), ámbar (empatando), rojo oscuro (perdiendo), gris (espera/FT)
+- Datos desde `docs/data/latest.json`, actualizado con SerpAPI
+- Partidos futuros filtrados automáticamente (no se muestran)
+- Hasta 6 partidos recientes reales (5 visibles + "ver más desgracias")
 
 ## Qué NO incluye este proyecto
 
 - Tabla de posiciones
+- Subpáginas
+- Estadísticas históricas en la vista principal
 - Estadísticas por jugador
 - Filtros por competición o fecha
 - Actualización automática en tiempo real
@@ -39,16 +41,8 @@ Proyecto personal que muestra el estado actual y las estadísticas históricas d
 
 ## Cómo actualizar los datos recientes
 
-Ejecutar el script con una API key de SerpAPI:
-
 ```
 python scripts/update_latest.py --api-key TU_KEY
-```
-
-O usando variable de entorno:
-
-```
-SERPAPI_KEY=TU_KEY python scripts/update_latest.py
 ```
 
 Luego hacer commit y push de `docs/data/latest.json`.

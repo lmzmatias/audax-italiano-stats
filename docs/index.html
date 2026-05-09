@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Audax Italiano Stats 2026</title>
+  <title>ultimas desgracias de audax</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #ffffff;
       color: #222222;
       max-width: 640px;
@@ -20,191 +23,162 @@
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
       color: #1a6b2f;
       border-bottom: 3px solid #c0392b;
       padding-bottom: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 24px;
     }
 
-    h2 {
-      font-size: 1.1rem;
-      color: #1a6b2f;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 32px;
-      margin-bottom: 10px;
-      border-left: 4px solid #1a6b2f;
-      padding-left: 10px;
-    }
-
-    p {
-      margin: 8px 0;
-      font-size: 1rem;
-    }
-
-    .subtitulo {
-      color: #666666;
-      font-size: 0.9rem;
-      margin: 4px 0;
-    }
-
-    span {
-      font-weight: bold;
-    }
-
-    /* Bloque principal */
+    /* ── Bloque principal ─────────────────────────────────── */
     #bloque-principal {
       background-color: #f4f9f5;
       border-left: 5px solid #1a6b2f;
-      padding: 20px;
-      margin: 24px 0 16px 0;
+      padding: 20px 20px 16px;
+      margin-bottom: 16px;
       border-radius: 4px;
     }
 
     #frase-principal {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #1a6b2f;
-      margin: 0 0 12px 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 14px;
     }
 
     #marcador-principal {
-      font-size: 2rem;
-      font-weight: bold;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
       color: #222222;
-      margin: 0 0 4px 0;
-    }
-
-    #rival-principal {
-      font-size: 1rem;
-      color: #444444;
-      margin: 0 0 4px 0;
+      margin: 0 0 4px;
     }
 
     #estado-principal {
-      font-size: 0.85rem;
-      color: #c0392b;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin: 0;
-    }
-
-    /* Bloque anterior */
-    #bloque-anterior {
-      background-color: #fafafa;
-      border-left: 3px solid #cccccc;
-      padding: 12px 16px;
-      margin-bottom: 32px;
-      border-radius: 4px;
-    }
-
-    #frase-anterior {
-      font-size: 0.9rem;
-      color: #555555;
-      font-style: italic;
-      margin: 0 0 6px 0;
-    }
-
-    #marcador-anterior {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #444444;
-      margin: 0 0 2px 0;
-    }
-
-    #rival-anterior {
-      font-size: 0.85rem;
-      color: #777777;
-      margin: 0 0 2px 0;
-    }
-
-    #estado-anterior {
+      font-family: 'Inter', sans-serif;
       font-size: 0.8rem;
-      color: #999999;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #888888;
       margin: 0;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Colores de frase por estado ──────────────────────── */
+    .color-ganando    { color: #1a6b2f; }
+    .color-empatando  { color: #b07d00; }
+    .color-perdiendo  { color: #8b1a1a; }
+    .color-ft         { color: #444444; }
+    .color-espera     { color: #888888; }
+    .color-suspendido { color: #c0392b; }
+    .color-sin-datos  { color: #aaaaaa; }
+
+    /* ── Partidos recientes ────────────────────────────────── */
+    #recientes {
+      margin-bottom: 8px;
+    }
+
+    .partido-reciente {
+      border-left: 3px solid #e0e0e0;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 2px;
+    }
+
+    .partido-reciente .frase-rec {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #666666;
+      font-style: italic;
+      margin: 0 0 3px;
+    }
+
+    .partido-reciente .marcador-rec {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #444444;
+      margin: 0 0 2px;
+    }
+
+    .partido-reciente .estado-rec {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #aaaaaa;
+      margin: 0;
+    }
+
+    /* ── Botón expandir ───────────────────────────────────── */
+    #btn-expandir {
+      background: none;
+      border: 1px solid #dddddd;
+      color: #888888;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 4px;
+      display: none;
+    }
+
+    #btn-expandir:hover {
+      border-color: #aaaaaa;
+      color: #555555;
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 20px 16px;
-      }
-
-      h1 {
-        font-size: 1.4rem;
-      }
-
-      h2 {
-        font-size: 1rem;
-      }
-
-      p {
-        font-size: 0.95rem;
-      }
-
-      #frase-principal {
-        font-size: 1.1rem;
-      }
-
-      #marcador-principal {
-        font-size: 1.6rem;
-      }
+      body { padding: 20px 14px; }
+      h1   { font-size: 1.25rem; }
+      #frase-principal    { font-size: 1.05rem; }
+      #marcador-principal { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <h1>Audax Italiano Stats</h1>
-  <p class="subtitulo">Temporada 2026 — Estadísticas del equipo.</p>
+  <h1>ultimas desgracias de audax</h1>
 
-  <!-- Bloque principal: partido en vivo o último partido -->
+  <!-- Bloque principal -->
   <div id="bloque-principal">
-    <p id="frase-principal">Cargando...</p>
+    <p id="frase-principal" class="color-espera">Cargando datos...</p>
     <p id="marcador-principal"></p>
-    <p id="rival-principal"></p>
     <p id="estado-principal"></p>
   </div>
 
-  <!-- Bloque secundario: partido anterior -->
-  <div id="bloque-anterior" style="display:none;">
-    <p id="frase-anterior"></p>
-    <p id="marcador-anterior"></p>
-    <p id="rival-anterior"></p>
-    <p id="estado-anterior"></p>
-  </div>
-
-  <!-- Estadísticas históricas desde CSV -->
-  <h2>Resumen general</h2>
-  <p>Partidos jugados: <span id="partidos">...</span></p>
-
-  <h2>Resultados</h2>
-  <p>Victorias: <span id="victorias">...</span></p>
-  <p>Empates: <span id="empates">...</span></p>
-  <p>Derrotas: <span id="derrotas">...</span></p>
-
-  <h2>Goles</h2>
-  <p>Goles a favor: <span id="goles-favor">...</span></p>
-  <p>Goles en contra: <span id="goles-contra">...</span></p>
-
-  <p class="subtitulo" style="margin-top:32px;">Fuente histórica: data/audax-2026.csv</p>
+  <!-- Partidos recientes -->
+  <div id="recientes"></div>
+  <button id="btn-expandir">ver más desgracias</button>
 
   <script>
-    // ── Frases exactas ──────────────────────────────────────────────
+    // ── Frases ─────────────────────────────────────────────────────
+    var FRASES_ESPERA = [
+      'Esperando que estos cracks salgan a la cancha...',
+      'Avisen cuando jueguen.',
+      'Sufre el fútbol sin el Audax en la cancha...'
+    ];
+
+    function fraseEspera() {
+      return FRASES_ESPERA[Math.floor(Math.random() * FRASES_ESPERA.length)];
+    }
+
     function frasePartido(partido, esVivo) {
-      if (!partido) return 'No hay datos recientes, les pagan para nada.';
-
+      if (!partido) return { texto: 'No hay datos recientes, les pagan para nada.', clase: 'color-sin-datos' };
       var s = partido.status;
-      if (s === 'SUSPENDED' || s === 'CANCELLED') return 'SUSPENDIDO.';
-
+      if (s === 'SUSPENDED' || s === 'CANCELLED') return { texto: 'SUSPENDIDO.', clase: 'color-suspendido' };
       if (esVivo) {
-        if (partido.score_audax > partido.score_rival) return 'Agarraron la pala.';
-        if (partido.score_audax === partido.score_rival) return 'TIENEN QUE HACER MÁS GOLES QUE EL RIVAL!';
-        return '¿Ganar? ¿para qué?';
+        if (partido.score_audax > partido.score_rival)  return { texto: 'Agarraron la pala.', clase: 'color-ganando' };
+        if (partido.score_audax === partido.score_rival) return { texto: 'TIENEN QUE HACER MÁS GOLES QUE EL RIVAL!', clase: 'color-empatando' };
+        return { texto: '¿Ganar? ¿para qué?', clase: 'color-perdiendo' };
       } else {
         var r = partido.result;
-        if (r === 'Victoria') return 'Hicieron lo que tenían que hacer, para eso les pagan.';
-        if (r === 'Empate')   return 'Ni se ganó ni se perdió, gestión pura.';
-        if (r === 'Derrota')  return 'El pasto estaba muy largo.';
-        return 'No hay datos recientes, les pagan para nada.';
+        if (r === 'Victoria') return { texto: 'Hicieron lo que tenían que hacer, para eso les pagan.', clase: 'color-ft' };
+        if (r === 'Empate')   return { texto: 'Empatar también es una decisión.', clase: 'color-ft' };
+        if (r === 'Derrota')  return { texto: 'El pasto estaba muy largo.', clase: 'color-ft' };
+        return { texto: 'No hay datos recientes, les pagan para nada.', clase: 'color-sin-datos' };
       }
     }
 
@@ -213,72 +187,110 @@
     }
 
     function estadoTexto(p) {
-      if (p.status === 'LIVE') return '● EN VIVO';
+      if (p.status === 'LIVE') return '● en vivo';
       if (p.status === 'FT')   return 'FT · ' + p.date;
       return p.status + ' · ' + p.date;
     }
 
-    // ── Cargar latest.json ──────────────────────────────────────────
+    function parsearFecha(dateStr) {
+      if (!dateStr) return null;
+      var isoMatch = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (isoMatch) return new Date(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1, parseInt(isoMatch[3]));
+      var shortMatch = dateStr.match(/(\d{2})-(\d{2})$/);
+      if (shortMatch) return new Date(new Date().getFullYear(), parseInt(shortMatch[2]) - 1, parseInt(shortMatch[1]));
+      return null;
+    }
+
+    function horasDesde(dateStr) {
+      var d = parsearFecha(dateStr);
+      if (!d) return 999;
+      return (Date.now() - d.getTime()) / (1000 * 60 * 60);
+    }
+
+    function setFrase(elId, frase) {
+      var el = document.getElementById(elId);
+      el.className = frase.clase;
+      el.textContent = frase.texto;
+    }
+
+    function crearBloqueReciente(partido) {
+      var f = frasePartido(partido, false);
+      var div = document.createElement('div');
+      div.className = 'partido-reciente';
+      div.innerHTML =
+        '<p class="frase-rec">' + f.texto + '</p>' +
+        '<p class="marcador-rec">' + marcador(partido) + '</p>' +
+        '<p class="estado-rec">' + estadoTexto(partido) + '</p>';
+      return div;
+    }
+
+    // ── Cargar latest.json ─────────────────────────────────────────
     fetch('data/latest.json')
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        var principal = data.live || data.last;
-        var esVivo    = !!data.live;
-        var anterior  = data.previous;
-
-        // Bloque principal
-        if (principal) {
-          document.getElementById('frase-principal').textContent   = frasePartido(principal, esVivo);
-          document.getElementById('marcador-principal').textContent = marcador(principal);
-          document.getElementById('rival-principal').textContent   = '';
-          document.getElementById('estado-principal').textContent  = estadoTexto(principal);
-        } else {
-          document.getElementById('frase-principal').textContent = '¿De qué se cansan como para tener vacaciones?';
-          document.getElementById('marcador-principal').textContent = '';
-          document.getElementById('estado-principal').textContent = '';
+        var esVivo   = !!data.live;
+        var ultimo   = data.last;
+        var anterior = data.previous;
+        // Construir lista de partidos FT (hasta 10)
+        var ftList = [];
+        if (ultimo)   ftList.push(ultimo);
+        if (anterior) ftList.push(anterior);
+        // Si el JSON tuviera más partidos en data.history, se agregarían aquí
+        if (data.history && Array.isArray(data.history)) {
+          data.history.forEach(function(p) { if (ftList.length < 10) ftList.push(p); });
         }
 
-        // Bloque anterior
-        if (anterior) {
-          document.getElementById('bloque-anterior').style.display = 'block';
-          document.getElementById('frase-anterior').textContent    = frasePartido(anterior, false);
-          document.getElementById('marcador-anterior').textContent = marcador(anterior);
-          document.getElementById('rival-anterior').textContent    = '';
-          document.getElementById('estado-anterior').textContent   = estadoTexto(anterior);
+        // ── Bloque principal ──
+        if (esVivo) {
+          var f = frasePartido(data.live, true);
+          setFrase('frase-principal', f);
+          document.getElementById('marcador-principal').textContent = marcador(data.live);
+          document.getElementById('estado-principal').textContent   = estadoTexto(data.live);
+
+        } else if (ultimo) {
+          var horas = horasDesde(ultimo.date);
+          if (horas <= 12) {
+            var f2 = frasePartido(ultimo, false);
+            setFrase('frase-principal', f2);
+            document.getElementById('marcador-principal').textContent = marcador(ultimo);
+            document.getElementById('estado-principal').textContent   = estadoTexto(ultimo);
+            // El último ya está en el principal, quitarlo de la lista de recientes
+            ftList = ftList.slice(1);
+          } else {
+            setFrase('frase-principal', { texto: fraseEspera(), clase: 'color-espera' });
+            document.getElementById('marcador-principal').textContent = '';
+            document.getElementById('estado-principal').textContent   = '';
+          }
+        } else {
+          setFrase('frase-principal', { texto: '¿De qué se cansan como para tener vacaciones?', clase: 'color-espera' });
+          document.getElementById('marcador-principal').textContent = '';
+          document.getElementById('estado-principal').textContent   = '';
+        }
+
+        // ── Partidos recientes ──
+        var recientesEl = document.getElementById('recientes');
+        var btnExpandir = document.getElementById('btn-expandir');
+        var VISIBLE = 5;
+
+        ftList.forEach(function(p, i) {
+          var bloque = crearBloqueReciente(p);
+          if (i >= VISIBLE) bloque.style.display = 'none';
+          recientesEl.appendChild(bloque);
+        });
+
+        if (ftList.length > VISIBLE) {
+          btnExpandir.style.display = 'inline-block';
+          btnExpandir.addEventListener('click', function() {
+            var ocultos = recientesEl.querySelectorAll('.partido-reciente');
+            ocultos.forEach(function(el) { el.style.display = ''; });
+            btnExpandir.style.display = 'none';
+          });
         }
       })
       .catch(function() {
-        document.getElementById('frase-principal').textContent = 'No hay datos recientes, les pagan para nada.';
+        setFrase('frase-principal', { texto: 'No hay datos recientes, les pagan para nada.', clase: 'color-sin-datos' });
         document.getElementById('marcador-principal').textContent = '';
-        document.getElementById('estado-principal').textContent = '';
-      });
-
-    // ── Estadísticas históricas desde CSV ──────────────────────────
-    fetch('data/audax-2026.csv')
-      .then(function(response) { return response.text(); })
-      .then(function(text) {
-        var filas = text.trim().split('\n');
-        var datos = filas.slice(1);
-
-        var victorias = 0, empates = 0, derrotas = 0;
-        var golesFavor = 0, golesContra = 0;
-
-        datos.forEach(function(fila) {
-          var columnas = fila.split(',');
-          var resultado = columnas[8].trim();
-          if (resultado === 'Victoria') victorias++;
-          else if (resultado === 'Empate') empates++;
-          else if (resultado === 'Derrota') derrotas++;
-          golesFavor  += parseInt(columnas[6], 10);
-          golesContra += parseInt(columnas[7], 10);
-        });
-
-        document.getElementById('partidos').textContent     = datos.length;
-        document.getElementById('victorias').textContent    = victorias;
-        document.getElementById('empates').textContent      = empates;
-        document.getElementById('derrotas').textContent     = derrotas;
-        document.getElementById('goles-favor').textContent  = golesFavor;
-        document.getElementById('goles-contra').textContent = golesContra;
+        document.getElementById('estado-principal').textContent   = '';
       });
   </script>
 </body>

@@ -16,5 +16,39 @@
     "status": "FT",
     "date": "Mar, 28-04"
   },
+  "history": [
+    {
+      "rival": "Deportes Limache",
+      "score_audax": 2,
+      "score_rival": 2,
+      "result": "Empate",
+      "status": "FT",
+      "date": "Vie, 24-04"
+    },
+    {
+      "rival": "Huachipato",
+      "score_audax": 2,
+      "score_rival": 3,
+      "result": "Derrota",
+      "status": "FT",
+      "date": "19-04"
+    },
+    {
+      "rival": "Vasco da Gama",
+      "score_audax": 2,
+      "score_rival": 1,
+      "result": "Victoria",
+      "status": "FT",
+      "date": "14-04"
+    },
+    {
+      "rival": "U. Católica",
+      "score_audax": 3,
+      "score_rival": 4,
+      "result": "Derrota",
+      "status": "FT",
+      "date": "11-04"
+    }
+  ],
   "updated_at": "2026-05-08"
 }
