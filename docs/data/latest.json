@@ -4,12 +4,12 @@
     "rival": "D. La Serena",
     "home": "D. La Serena",
     "away": "A. Italiano",
-    "score_audax": 2,
+    "score_audax": 3,
     "score_rival": 2,
     "result": "LIVE",
     "status": "LIVE",
     "status_long": "Second Half",
-    "elapsed": 48,
+    "elapsed": 62,
     "extra": null,
     "events": [
       {
@@ -78,6 +78,15 @@
       {
         "minute": 45,
         "extra": 5,
+        "type": "goal",
+        "player": null,
+        "assist": null,
+        "team": "A. Italiano",
+        "is_audax": true
+      },
+      {
+        "minute": 50,
+        "extra": null,
         "type": "goal",
         "player": null,
         "assist": null,

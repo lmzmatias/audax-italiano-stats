@@ -82,48 +82,43 @@
       padding-top: 10px;
     }
 
+    /* grid de 3 columnas: Audax | minuto | rival */
     .eventos-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px 8px;
-    }
-
-    .ev-fila {
-      display: contents; /* cada fila ocupa las 2 columnas del grid */
+      grid-template-columns: 1fr auto 1fr;
+      gap: 2px 6px;
+      align-items: baseline;
     }
 
     .ev-celda {
       font-family: 'Inter', sans-serif;
       font-size: 0.8rem;
       padding: 2px 0;
-      display: flex;
-      gap: 4px;
-      align-items: baseline;
     }
 
     /* columna izquierda: Audax — alineado a la derecha */
     .ev-celda.ev-audax {
-      justify-content: flex-end;
       text-align: right;
       color: #1a6b2f;
     }
 
+    /* columna central: minuto */
+    .ev-celda.ev-min-col {
+      text-align: center;
+      font-weight: 700;
+      color: #999999;
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
     /* columna derecha: rival — alineado a la izquierda */
     .ev-celda.ev-rival {
-      justify-content: flex-start;
       text-align: left;
       color: #8b1a1a;
     }
 
     .ev-celda.ev-vacia {
-      /* celda vacía cuando solo hay evento de un lado */
-    }
-
-    .ev-min {
-      font-weight: 700;
-      color: #999999;
-      font-size: 0.75rem;
-      flex-shrink: 0;
+      /* celda vacía */
     }
 
     /* ── Partidos recientes ────────────────────────────────── */
@@ -239,7 +234,10 @@
     }
 
     function estadoTexto(p) {
-      if (p.status === 'LIVE') return '● en vivo';
+      if (p.status === 'LIVE') {
+        var min = p.elapsed ? p.elapsed + "'" : '';
+        return '● en vivo' + (min ? ' · ' + min : '');
+      }
       if (p.status === 'FT')   return 'FT · ' + p.date;
       return p.status + ' · ' + p.date;
     }
@@ -315,32 +313,26 @@
       filas.forEach(function(fila) {
         var minStr = fila.extra ? fila.minute + '+' + fila.extra + "'" : fila.minute + "'";
 
-        // Cuántas filas necesita este minuto (máx entre audax y rival)
+        // Cuántas sub-filas necesita este minuto (máx entre audax y rival)
         var n = Math.max(fila.audax.length, fila.rival.length);
         for (var i = 0; i < n; i++) {
-          // Celda izquierda: Audax
+          // Columna izquierda: Audax
           var celdaA = document.createElement('div');
-          if (fila.audax[i]) {
-            celdaA.className = 'ev-celda ev-audax';
-            // En la primera sub-fila del minuto, mostrar el minuto al final (derecha)
-            celdaA.innerHTML = textoEvento(fila.audax[i]) +
-              (i === 0 ? ' <span class="ev-min">' + minStr + '</span>' : '');
-          } else {
-            celdaA.className = 'ev-celda ev-vacia';
-            if (i === 0) celdaA.innerHTML = '<span class="ev-min" style="margin-left:auto">' + minStr + '</span>';
-          }
+          celdaA.className = 'ev-celda ' + (fila.audax[i] ? 'ev-audax' : 'ev-vacia');
+          if (fila.audax[i]) celdaA.textContent = textoEvento(fila.audax[i]);
 
-          // Celda derecha: rival
+          // Columna central: minuto (solo en la primera sub-fila)
+          var celdaM = document.createElement('div');
+          celdaM.className = 'ev-celda ev-min-col';
+          celdaM.textContent = i === 0 ? minStr : '';
+
+          // Columna derecha: rival
           var celdaR = document.createElement('div');
-          if (fila.rival[i]) {
-            celdaR.className = 'ev-celda ev-rival';
-            celdaR.innerHTML = (i === 0 ? '<span class="ev-min">' + minStr + '</span> ' : '') +
-              textoEvento(fila.rival[i]);
-          } else {
-            celdaR.className = 'ev-celda ev-vacia';
-          }
+          celdaR.className = 'ev-celda ' + (fila.rival[i] ? 'ev-rival' : 'ev-vacia');
+          if (fila.rival[i]) celdaR.textContent = textoEvento(fila.rival[i]);
 
           grid.appendChild(celdaA);
+          grid.appendChild(celdaM);
           grid.appendChild(celdaR);
         }
       });
