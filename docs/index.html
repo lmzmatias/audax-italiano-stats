@@ -82,37 +82,48 @@
       padding-top: 10px;
     }
 
-    .evento-vivo {
+    .eventos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 8px;
+    }
+
+    .ev-fila {
+      display: contents; /* cada fila ocupa las 2 columnas del grid */
+    }
+
+    .ev-celda {
       font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
-      color: #444444;
-      margin: 0 0 4px;
+      font-size: 0.8rem;
+      padding: 2px 0;
       display: flex;
-      gap: 8px;
+      gap: 4px;
       align-items: baseline;
     }
 
-    .evento-vivo .ev-min {
-      font-weight: 700;
-      color: #888888;
-      min-width: 36px;
-      flex-shrink: 0;
-    }
-
-    .evento-vivo .ev-icon {
-      flex-shrink: 0;
-    }
-
-    .evento-vivo .ev-desc {
-      color: #444444;
-    }
-
-    .evento-vivo.ev-audax .ev-desc {
+    /* columna izquierda: Audax — alineado a la derecha */
+    .ev-celda.ev-audax {
+      justify-content: flex-end;
+      text-align: right;
       color: #1a6b2f;
     }
 
-    .evento-vivo.ev-rival .ev-desc {
+    /* columna derecha: rival — alineado a la izquierda */
+    .ev-celda.ev-rival {
+      justify-content: flex-start;
+      text-align: left;
       color: #8b1a1a;
+    }
+
+    .ev-celda.ev-vacia {
+      /* celda vacía cuando solo hay evento de un lado */
+    }
+
+    .ev-min {
+      font-weight: 700;
+      color: #999999;
+      font-size: 0.75rem;
+      flex-shrink: 0;
     }
 
     /* ── Partidos recientes ────────────────────────────────── */
@@ -264,12 +275,20 @@
       substitution: '🔄',
     };
 
+    function textoEvento(e) {
+      var icono   = ICONOS[e.type] || '•';
+      var jugador = e.player || '—';
+      var asist   = (e.type === 'goal' || e.type === 'penalty') && e.assist
+                    ? ' (' + e.assist + ')' : '';
+      return icono + ' ' + jugador + asist;
+    }
+
     function renderEventos(eventos) {
       var el = document.getElementById('eventos-vivo');
       el.innerHTML = '';
       if (!eventos || eventos.length === 0) { el.style.display = 'none'; return; }
 
-      // Mostrar solo goles y tarjetas (no cambios, para no saturar)
+      // Solo goles y tarjetas
       var relevantes = eventos.filter(function(e) {
         return e.type === 'goal' || e.type === 'penalty' || e.type === 'own_goal' ||
                e.type === 'yellow_card' || e.type === 'red_card';
@@ -277,22 +296,56 @@
 
       if (relevantes.length === 0) { el.style.display = 'none'; return; }
 
+      // Agrupar por minuto (clave: "minute+extra")
+      var filas = [];
+      var minMap = {};
       relevantes.forEach(function(e) {
-        var minStr = e.extra ? e.minute + '+' + e.extra + "'" : e.minute + "'";
-        var icono  = ICONOS[e.type] || '•';
-        var jugador = e.player || '—';
-        var asist   = (e.type === 'goal' || e.type === 'penalty') && e.assist ? ' (asist: ' + e.assist + ')' : '';
-        var equipo  = e.is_audax ? 'ev-audax' : 'ev-rival';
-
-        var div = document.createElement('div');
-        div.className = 'evento-vivo ' + equipo;
-        div.innerHTML =
-          '<span class="ev-min">' + minStr + '</span>' +
-          '<span class="ev-icon">' + icono + '</span>' +
-          '<span class="ev-desc">' + jugador + asist + '</span>';
-        el.appendChild(div);
+        var key = e.minute + '_' + (e.extra || 0);
+        if (!minMap[key]) {
+          minMap[key] = { key: key, minute: e.minute, extra: e.extra, audax: [], rival: [] };
+          filas.push(minMap[key]);
+        }
+        if (e.is_audax) minMap[key].audax.push(e);
+        else            minMap[key].rival.push(e);
       });
 
+      var grid = document.createElement('div');
+      grid.className = 'eventos-grid';
+
+      filas.forEach(function(fila) {
+        var minStr = fila.extra ? fila.minute + '+' + fila.extra + "'" : fila.minute + "'";
+
+        // Cuántas filas necesita este minuto (máx entre audax y rival)
+        var n = Math.max(fila.audax.length, fila.rival.length);
+        for (var i = 0; i < n; i++) {
+          // Celda izquierda: Audax
+          var celdaA = document.createElement('div');
+          if (fila.audax[i]) {
+            celdaA.className = 'ev-celda ev-audax';
+            // En la primera sub-fila del minuto, mostrar el minuto al final (derecha)
+            celdaA.innerHTML = textoEvento(fila.audax[i]) +
+              (i === 0 ? ' <span class="ev-min">' + minStr + '</span>' : '');
+          } else {
+            celdaA.className = 'ev-celda ev-vacia';
+            if (i === 0) celdaA.innerHTML = '<span class="ev-min" style="margin-left:auto">' + minStr + '</span>';
+          }
+
+          // Celda derecha: rival
+          var celdaR = document.createElement('div');
+          if (fila.rival[i]) {
+            celdaR.className = 'ev-celda ev-rival';
+            celdaR.innerHTML = (i === 0 ? '<span class="ev-min">' + minStr + '</span> ' : '') +
+              textoEvento(fila.rival[i]);
+          } else {
+            celdaR.className = 'ev-celda ev-vacia';
+          }
+
+          grid.appendChild(celdaA);
+          grid.appendChild(celdaR);
+        }
+      });
+
+      el.appendChild(grid);
       el.style.display = 'block';
     }
 
