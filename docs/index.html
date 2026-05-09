@@ -53,6 +53,78 @@
       font-weight: bold;
     }
 
+    /* Bloque principal */
+    #bloque-principal {
+      background-color: #f4f9f5;
+      border-left: 5px solid #1a6b2f;
+      padding: 20px;
+      margin: 24px 0 16px 0;
+      border-radius: 4px;
+    }
+
+    #frase-principal {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #1a6b2f;
+      margin: 0 0 12px 0;
+    }
+
+    #marcador-principal {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #222222;
+      margin: 0 0 4px 0;
+    }
+
+    #rival-principal {
+      font-size: 1rem;
+      color: #444444;
+      margin: 0 0 4px 0;
+    }
+
+    #estado-principal {
+      font-size: 0.85rem;
+      color: #c0392b;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* Bloque anterior */
+    #bloque-anterior {
+      background-color: #fafafa;
+      border-left: 3px solid #cccccc;
+      padding: 12px 16px;
+      margin-bottom: 32px;
+      border-radius: 4px;
+    }
+
+    #frase-anterior {
+      font-size: 0.9rem;
+      color: #555555;
+      font-style: italic;
+      margin: 0 0 6px 0;
+    }
+
+    #marcador-anterior {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #444444;
+      margin: 0 0 2px 0;
+    }
+
+    #rival-anterior {
+      font-size: 0.85rem;
+      color: #777777;
+      margin: 0 0 2px 0;
+    }
+
+    #estado-anterior {
+      font-size: 0.8rem;
+      color: #999999;
+      margin: 0;
+    }
+
     @media (max-width: 480px) {
       body {
         padding: 20px 16px;
@@ -69,14 +141,38 @@
       p {
         font-size: 0.95rem;
       }
+
+      #frase-principal {
+        font-size: 1.1rem;
+      }
+
+      #marcador-principal {
+        font-size: 1.6rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Audax Italiano Stats</h1>
-  <p class="subtitulo">Temporada 2026 — Estadísticas del equipo basadas en datos cargados manualmente.</p>
-  <p class="subtitulo">Fuente de datos: data/audax-2026.csv</p>
+  <p class="subtitulo">Temporada 2026 — Estadísticas del equipo.</p>
 
+  <!-- Bloque principal: partido en vivo o último partido -->
+  <div id="bloque-principal">
+    <p id="frase-principal">Cargando...</p>
+    <p id="marcador-principal"></p>
+    <p id="rival-principal"></p>
+    <p id="estado-principal"></p>
+  </div>
+
+  <!-- Bloque secundario: partido anterior -->
+  <div id="bloque-anterior" style="display:none;">
+    <p id="frase-anterior"></p>
+    <p id="marcador-anterior"></p>
+    <p id="rival-anterior"></p>
+    <p id="estado-anterior"></p>
+  </div>
+
+  <!-- Estadísticas históricas desde CSV -->
   <h2>Resumen general</h2>
   <p>Partidos jugados: <span id="partidos">...</span></p>
 
@@ -89,12 +185,79 @@
   <p>Goles a favor: <span id="goles-favor">...</span></p>
   <p>Goles en contra: <span id="goles-contra">...</span></p>
 
+  <p class="subtitulo" style="margin-top:32px;">Fuente histórica: data/audax-2026.csv</p>
+
   <script>
+    // ── Frases exactas ──────────────────────────────────────────────
+    function frasePartido(partido, esVivo) {
+      if (!partido) return 'No hay datos recientes, les pagan para nada.';
+
+      var s = partido.status;
+      if (s === 'SUSPENDED' || s === 'CANCELLED') return 'SUSPENDIDO.';
+
+      if (esVivo) {
+        if (partido.score_audax > partido.score_rival) return 'Agarraron la pala.';
+        if (partido.score_audax === partido.score_rival) return 'TIENEN QUE HACER MÁS GOLES QUE EL RIVAL!';
+        return '¿Ganar? ¿para qué?';
+      } else {
+        var r = partido.result;
+        if (r === 'Victoria') return 'Hicieron lo que tenían que hacer, para eso les pagan.';
+        if (r === 'Empate')   return 'Ni se ganó ni se perdió, gestión pura.';
+        if (r === 'Derrota')  return 'El pasto estaba muy largo.';
+        return 'No hay datos recientes, les pagan para nada.';
+      }
+    }
+
+    function marcador(p) {
+      return 'Audax ' + p.score_audax + ' – ' + p.score_rival + ' ' + p.rival;
+    }
+
+    function estadoTexto(p) {
+      if (p.status === 'LIVE') return '● EN VIVO';
+      if (p.status === 'FT')   return 'FT · ' + p.date;
+      return p.status + ' · ' + p.date;
+    }
+
+    // ── Cargar latest.json ──────────────────────────────────────────
+    fetch('data/latest.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var principal = data.live || data.last;
+        var esVivo    = !!data.live;
+        var anterior  = data.previous;
+
+        // Bloque principal
+        if (principal) {
+          document.getElementById('frase-principal').textContent   = frasePartido(principal, esVivo);
+          document.getElementById('marcador-principal').textContent = marcador(principal);
+          document.getElementById('rival-principal').textContent   = '';
+          document.getElementById('estado-principal').textContent  = estadoTexto(principal);
+        } else {
+          document.getElementById('frase-principal').textContent = '¿De qué se cansan como para tener vacaciones?';
+          document.getElementById('marcador-principal').textContent = '';
+          document.getElementById('estado-principal').textContent = '';
+        }
+
+        // Bloque anterior
+        if (anterior) {
+          document.getElementById('bloque-anterior').style.display = 'block';
+          document.getElementById('frase-anterior').textContent    = frasePartido(anterior, false);
+          document.getElementById('marcador-anterior').textContent = marcador(anterior);
+          document.getElementById('rival-anterior').textContent    = '';
+          document.getElementById('estado-anterior').textContent   = estadoTexto(anterior);
+        }
+      })
+      .catch(function() {
+        document.getElementById('frase-principal').textContent = 'No hay datos recientes, les pagan para nada.';
+        document.getElementById('marcador-principal').textContent = '';
+        document.getElementById('estado-principal').textContent = '';
+      });
+
+    // ── Estadísticas históricas desde CSV ──────────────────────────
     fetch('data/audax-2026.csv')
       .then(function(response) { return response.text(); })
       .then(function(text) {
         var filas = text.trim().split('\n');
-        // La primera fila es el encabezado
         var datos = filas.slice(1);
 
         var victorias = 0, empates = 0, derrotas = 0;
@@ -106,15 +269,15 @@
           if (resultado === 'Victoria') victorias++;
           else if (resultado === 'Empate') empates++;
           else if (resultado === 'Derrota') derrotas++;
-          golesFavor += parseInt(columnas[6], 10);
+          golesFavor  += parseInt(columnas[6], 10);
           golesContra += parseInt(columnas[7], 10);
         });
 
-        document.getElementById('partidos').textContent = datos.length;
-        document.getElementById('victorias').textContent = victorias;
-        document.getElementById('empates').textContent = empates;
-        document.getElementById('derrotas').textContent = derrotas;
-        document.getElementById('goles-favor').textContent = golesFavor;
+        document.getElementById('partidos').textContent     = datos.length;
+        document.getElementById('victorias').textContent    = victorias;
+        document.getElementById('empates').textContent      = empates;
+        document.getElementById('derrotas').textContent     = derrotas;
+        document.getElementById('goles-favor').textContent  = golesFavor;
         document.getElementById('goles-contra').textContent = golesContra;
       });
   </script>

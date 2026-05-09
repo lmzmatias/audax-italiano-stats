@@ -1,6 +1,6 @@
 # audax-italiano-stats
 
-Estadísticas básicas del Audax Italiano a partir de datos mantenidos manualmente en CSV.
+Estadísticas y estado actual del Audax Italiano, con datos actualizados manualmente.
 
 ## Sitio web
 
@@ -9,30 +9,46 @@ https://lmzmatias.github.io/audax-italiano-stats/
 
 ## Descripción
 
-Proyecto personal que muestra estadísticas simples del Audax Italiano usando datos de partidos almacenados en un archivo CSV mantenido manualmente. El foco es la claridad de los datos y la exactitud de las estadísticas, no el diseño ni la automatización.
+Proyecto personal que muestra el estado actual y las estadísticas históricas del Audax Italiano. Los resultados recientes se obtienen via SerpAPI y se publican como un archivo JSON. Las estadísticas históricas se calculan desde un CSV mantenido manualmente.
 
-## Alcance actual (v1.3)
+## Alcance actual (v2.1)
 
 - Un equipo: Audax Italiano
 - Una temporada: 2026
 - Página web estática sin frameworks ni librerías externas
 - Publicada mediante GitHub Pages
-- Diseño visual básico inspirado en los colores del club (verde y blanco, con acento rojo)
-- Diseño responsive: se adapta correctamente a mobile, tablet y desktop
+- Diseño visual responsive inspirado en los colores del club
 
-## Fuente de datos
+### Bloque principal (datos recientes)
+- Muestra el partido en vivo si existe, o el último partido jugado
+- Incluye un mensaje contextual según el resultado
+- Datos obtenidos desde `docs/data/latest.json`, actualizado con SerpAPI
 
-Los datos se mantienen manualmente en el archivo `docs/data/audax-2026.csv`. Cada fila representa un partido e incluye fecha, competición, rival, goles y resultado.
-
-## Estadísticas que se muestran
-
-- Partidos jugados
-- Victorias, empates y derrotas
+### Estadísticas históricas (CSV)
+- Partidos jugados, victorias, empates, derrotas
 - Goles a favor y goles en contra
+- Datos desde `docs/data/audax-2026.csv`, mantenido manualmente
 
 ## Qué NO incluye este proyecto
 
+- Tabla de posiciones
 - Estadísticas por jugador
 - Filtros por competición o fecha
+- Actualización automática en tiempo real
 - Gráficos o visualizaciones
-- Actualización automática de datos
+
+## Cómo actualizar los datos recientes
+
+Ejecutar el script con una API key de SerpAPI:
+
+```
+python scripts/update_latest.py --api-key TU_KEY
+```
+
+O usando variable de entorno:
+
+```
+SERPAPI_KEY=TU_KEY python scripts/update_latest.py
+```
+
+Luego hacer commit y push de `docs/data/latest.json`.
