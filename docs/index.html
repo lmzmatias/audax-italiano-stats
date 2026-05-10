@@ -8,9 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -82,7 +80,6 @@
       padding-top: 10px;
     }
 
-    /* grid de 3 columnas: Audax | minuto | rival */
     .eventos-grid {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -90,41 +87,13 @@
       align-items: baseline;
     }
 
-    .ev-celda {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
-      padding: 2px 0;
-    }
-
-    /* columna izquierda: Audax — alineado a la derecha */
-    .ev-celda.ev-audax {
-      text-align: right;
-      color: #1a6b2f;
-    }
-
-    /* columna central: minuto */
-    .ev-celda.ev-min-col {
-      text-align: center;
-      font-weight: 700;
-      color: #999999;
-      font-size: 0.72rem;
-      white-space: nowrap;
-    }
-
-    /* columna derecha: rival — alineado a la izquierda */
-    .ev-celda.ev-rival {
-      text-align: left;
-      color: #8b1a1a;
-    }
-
-    .ev-celda.ev-vacia {
-      /* celda vacía */
-    }
+    .ev-celda { font-family: 'Inter', sans-serif; font-size: 0.8rem; padding: 2px 0; }
+    .ev-celda.ev-audax   { text-align: right; color: #1a6b2f; }
+    .ev-celda.ev-min-col { text-align: center; font-weight: 700; color: #999999; font-size: 0.72rem; white-space: nowrap; }
+    .ev-celda.ev-rival   { text-align: left; color: #8b1a1a; }
 
     /* ── Partidos recientes ────────────────────────────────── */
-    #recientes {
-      margin-bottom: 8px;
-    }
+    #recientes { margin-bottom: 8px; }
 
     .partido-reciente {
       border-left: 3px solid #e0e0e0;
@@ -172,23 +141,95 @@
       display: none;
     }
 
-    #btn-expandir:hover {
-      border-color: #aaaaaa;
-      color: #555555;
+    #btn-expandir:hover { border-color: #aaaaaa; color: #555555; }
+
+    /* ── Tablas de competiciones ──────────────────────────── */
+    #tablas-section { margin-top: 36px; }
+
+    .tabla-comp { margin-bottom: 24px; }
+
+    .tabla-comp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #999999;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #eeeeee;
+      user-select: none;
     }
+
+    .tabla-comp-toggle { font-size: 0.68rem; color: #cccccc; display: none; }
+
+    .tabla-comp-body.collapsed { display: none; }
+
+    .tabla-standings {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      margin-top: 6px;
+    }
+
+    .tabla-standings th {
+      font-weight: 500;
+      color: #bbbbbb;
+      text-align: right;
+      padding: 4px 8px 4px 4px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tabla-standings th:first-child  { text-align: center; width: 30px; padding-left: 0; }
+    .tabla-standings th:nth-child(2) { text-align: left; }
+
+    .tabla-standings td {
+      padding: 5px 8px 5px 4px;
+      color: #666666;
+      text-align: right;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .tabla-standings td:first-child  { text-align: center; color: #bbbbbb; font-size: 0.75rem; width: 30px; }
+    .tabla-standings td:nth-child(2) { text-align: left; color: #444444; }
+
+    .tabla-standings tr.audax-row td {
+      font-weight: 600;
+      background-color: #f8f9f8;
+    }
+
+    .btn-ver-tabla {
+      background: none;
+      border: none;
+      color: #bbbbbb;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      padding: 5px 0;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .btn-ver-tabla:hover { color: #888888; }
 
     @media (max-width: 480px) {
       body { padding: 20px 14px; }
       h1   { font-size: 1.25rem; }
       #frase-principal    { font-size: 1.05rem; }
       #marcador-principal { font-size: 1.5rem; }
+      .tabla-comp-header  { cursor: pointer; }
+      .tabla-comp-toggle  { display: inline; }
     }
   </style>
 </head>
 <body>
   <h1>ultimas desgracias de audax</h1>
 
-  <!-- Bloque principal -->
   <div id="bloque-principal">
     <p id="frase-principal" class="color-espera">Cargando datos...</p>
     <p id="marcador-principal"></p>
@@ -196,9 +237,10 @@
     <div id="eventos-vivo" style="display:none"></div>
   </div>
 
-  <!-- Partidos recientes -->
   <div id="recientes"></div>
-  <button id="btn-expandir">ver más desgracias</button>
+  <button id="btn-expandir">Ver más desgracias</button>
+
+  <div id="tablas-section"></div>
 
   <script>
     // ── Frases ─────────────────────────────────────────────────────
@@ -238,7 +280,7 @@
         var min = p.elapsed ? p.elapsed + "'" : '';
         return '● en vivo' + (min ? ' · ' + min : '');
       }
-      if (p.status === 'FT')   return 'FT · ' + p.date;
+      if (p.status === 'FT') return 'FT · ' + p.date;
       return p.status + ' · ' + p.date;
     }
 
@@ -265,19 +307,14 @@
 
     // ── Eventos en vivo ────────────────────────────────────────────
     var ICONOS = {
-      goal:         '⚽',
-      penalty:      '⚽ (P)',
-      own_goal:     '⚽ (PP)',
-      yellow_card:  '🟨',
-      red_card:     '🟥',
-      substitution: '🔄',
+      goal: '⚽', penalty: '⚽ (P)', own_goal: '⚽ (PP)',
+      yellow_card: '🟨', red_card: '🟥', substitution: '🔄',
     };
 
     function textoEvento(e) {
       var icono   = ICONOS[e.type] || '•';
       var jugador = e.player || '—';
-      var asist   = (e.type === 'goal' || e.type === 'penalty') && e.assist
-                    ? ' (' + e.assist + ')' : '';
+      var asist   = (e.type === 'goal' || e.type === 'penalty') && e.assist ? ' (' + e.assist + ')' : '';
       return icono + ' ' + jugador + asist;
     }
 
@@ -286,17 +323,13 @@
       el.innerHTML = '';
       if (!eventos || eventos.length === 0) { el.style.display = 'none'; return; }
 
-      // Solo goles y tarjetas
       var relevantes = eventos.filter(function(e) {
         return e.type === 'goal' || e.type === 'penalty' || e.type === 'own_goal' ||
                e.type === 'yellow_card' || e.type === 'red_card';
       });
-
       if (relevantes.length === 0) { el.style.display = 'none'; return; }
 
-      // Agrupar por minuto (clave: "minute+extra")
-      var filas = [];
-      var minMap = {};
+      var filas = [], minMap = {};
       relevantes.forEach(function(e) {
         var key = e.minute + '_' + (e.extra || 0);
         if (!minMap[key]) {
@@ -312,28 +345,23 @@
 
       filas.reverse().forEach(function(fila) {
         var minStr = fila.extra ? fila.minute + '+' + fila.extra + "'" : fila.minute + "'";
-
-        // Cuántas sub-filas necesita este minuto (máx entre audax y rival)
         var n = Math.max(fila.audax.length, fila.rival.length);
         for (var i = 0; i < n; i++) {
-          // Columna izquierda: Audax
-          var celdaA = document.createElement('div');
-          celdaA.className = 'ev-celda ' + (fila.audax[i] ? 'ev-audax' : 'ev-vacia');
-          if (fila.audax[i]) celdaA.textContent = textoEvento(fila.audax[i]);
+          var cA = document.createElement('div');
+          cA.className = 'ev-celda ' + (fila.audax[i] ? 'ev-audax' : 'ev-vacia');
+          if (fila.audax[i]) cA.textContent = textoEvento(fila.audax[i]);
 
-          // Columna central: minuto (solo en la primera sub-fila)
-          var celdaM = document.createElement('div');
-          celdaM.className = 'ev-celda ev-min-col';
-          celdaM.textContent = i === 0 ? minStr : '';
+          var cM = document.createElement('div');
+          cM.className = 'ev-celda ev-min-col';
+          cM.textContent = i === 0 ? minStr : '';
 
-          // Columna derecha: rival
-          var celdaR = document.createElement('div');
-          celdaR.className = 'ev-celda ' + (fila.rival[i] ? 'ev-rival' : 'ev-vacia');
-          if (fila.rival[i]) celdaR.textContent = textoEvento(fila.rival[i]);
+          var cR = document.createElement('div');
+          cR.className = 'ev-celda ' + (fila.rival[i] ? 'ev-rival' : 'ev-vacia');
+          if (fila.rival[i]) cR.textContent = textoEvento(fila.rival[i]);
 
-          grid.appendChild(celdaA);
-          grid.appendChild(celdaM);
-          grid.appendChild(celdaR);
+          grid.appendChild(cA);
+          grid.appendChild(cM);
+          grid.appendChild(cR);
         }
       });
 
@@ -352,10 +380,106 @@
       return div;
     }
 
+    // ── Tablas de competiciones ────────────────────────────────────
+    function renderTablas(data) {
+      var section = document.getElementById('tablas-section');
+      section.innerHTML = '';
+
+      var standings = data.standings;
+      if (!standings || !Array.isArray(standings) || standings.length === 0) return;
+
+      var validas = standings.filter(function(s) {
+        return s && s.competition && s.table && s.table.length > 0;
+      });
+      if (validas.length === 0) return;
+
+      validas.sort(function(a, b) {
+        return (b.last_match_date || '').localeCompare(a.last_match_date || '');
+      });
+
+      var esMobile = window.innerWidth <= 480;
+
+      validas.forEach(function(comp) {
+        var compDiv = document.createElement('div');
+        compDiv.className = 'tabla-comp';
+
+        var header = document.createElement('div');
+        header.className = 'tabla-comp-header';
+        var titulo = document.createElement('span');
+        titulo.textContent = comp.competition;
+        var toggle = document.createElement('span');
+        toggle.className = 'tabla-comp-toggle';
+        toggle.textContent = '▼';
+        header.appendChild(titulo);
+        header.appendChild(toggle);
+
+        var body = document.createElement('div');
+        body.className = 'tabla-comp-body' + (esMobile ? ' collapsed' : '');
+
+        if (esMobile) {
+          header.addEventListener('click', function() {
+            var cerrado = body.classList.contains('collapsed');
+            body.classList.toggle('collapsed');
+            toggle.textContent = cerrado ? '▲' : '▼';
+          });
+        }
+
+        var tabla = comp.table;
+        var audaxIdx = -1;
+        tabla.forEach(function(r, i) { if (r.is_audax) audaxIdx = i; });
+
+        var start   = audaxIdx === -1 ? 0 : Math.max(0, audaxIdx - 3);
+        var end     = audaxIdx === -1 ? Math.min(7, tabla.length) : Math.min(tabla.length, audaxIdx + 4);
+        var preview = tabla.slice(start, end);
+        var expandidaTabla = false;
+
+        function construirTabla(filas) {
+          var t = document.createElement('table');
+          t.className = 'tabla-standings';
+          var hrow = t.createTHead().insertRow();
+          ['Pos', 'Equipo', 'PTS', 'DG'].forEach(function(col) {
+            var th = document.createElement('th');
+            th.textContent = col;
+            hrow.appendChild(th);
+          });
+          var tbody = t.createTBody();
+          filas.forEach(function(r) {
+            var tr = tbody.insertRow();
+            if (r.is_audax) tr.className = 'audax-row';
+            var dg = (r.gd >= 0 ? '+' : '') + r.gd;
+            [r.pos, r.team, r.pts, dg].forEach(function(val) {
+              tr.insertCell().textContent = val;
+            });
+          });
+          return t;
+        }
+
+        var tableEl = construirTabla(preview);
+        body.appendChild(tableEl);
+
+        if (tabla.length > preview.length) {
+          var btn = document.createElement('button');
+          btn.className = 'btn-ver-tabla';
+          btn.textContent = 'Ver tabla completa';
+          btn.onclick = function() {
+            expandidaTabla = !expandidaTabla;
+            body.removeChild(tableEl);
+            tableEl = construirTabla(expandidaTabla ? tabla : preview);
+            body.insertBefore(tableEl, btn);
+            btn.textContent = expandidaTabla ? 'Ver menos' : 'Ver tabla completa';
+          };
+          body.appendChild(btn);
+        }
+
+        compDiv.appendChild(header);
+        compDiv.appendChild(body);
+        section.appendChild(compDiv);
+      });
+    }
+
     // ── Renderizar datos ───────────────────────────────────────────
     function renderDatos(data) {
       document.getElementById('recientes').innerHTML = '';
-      document.getElementById('btn-expandir').style.display = 'none';
 
       var esVivo   = !!data.live;
       var ultimo   = data.last;
@@ -395,24 +519,33 @@
       }
 
       // ── Partidos recientes ──
-      var recientesEl = document.getElementById('recientes');
-      var btnExpandir = document.getElementById('btn-expandir');
-      var VISIBLE = 5;
+      var recientesEl     = document.getElementById('recientes');
+      var btnExpandir     = document.getElementById('btn-expandir');
+      var VISIBLE_DEFAULT = esVivo ? 1 : 2;
+      var expandido       = false;
 
-      ftList.forEach(function(p, i) {
-        var bloque = crearBloqueReciente(p);
-        if (i >= VISIBLE) bloque.style.display = 'none';
-        recientesEl.appendChild(bloque);
-      });
+      ftList.forEach(function(p) { recientesEl.appendChild(crearBloqueReciente(p)); });
 
-      if (ftList.length > VISIBLE) {
-        btnExpandir.style.display = 'inline-block';
-        btnExpandir.addEventListener('click', function() {
-          var ocultos = recientesEl.querySelectorAll('.partido-reciente');
-          ocultos.forEach(function(el) { el.style.display = ''; });
+      function actualizarVista() {
+        var bloques = recientesEl.querySelectorAll('.partido-reciente');
+        var limite  = expandido ? 10 : VISIBLE_DEFAULT;
+        bloques.forEach(function(el, i) { el.style.display = i < limite ? '' : 'none'; });
+        if (ftList.length > VISIBLE_DEFAULT) {
+          btnExpandir.style.display = 'inline-block';
+          btnExpandir.textContent   = expandido ? 'Ver menos' : 'Ver más desgracias';
+        } else {
           btnExpandir.style.display = 'none';
-        });
+        }
       }
+
+      actualizarVista();
+
+      btnExpandir.onclick = function() {
+        expandido = !expandido;
+        actualizarVista();
+      };
+
+      renderTablas(data);
     }
 
     // ── Cargar latest.json ─────────────────────────────────────────
@@ -429,9 +562,7 @@
         .then(function(r) { return r.json(); })
         .then(function(data) {
           renderDatos(data);
-          if (!enHorarioActivo()) return; // fuera de horario, no programar recarga
-          // Con partido en vivo: recargar cada 2 min
-          // Sin partido pero en horario: recargar cada 15 min (por si empieza uno)
+          if (!enHorarioActivo()) return;
           var intervalo = data.live ? 120000 : 900000;
           setTimeout(cargarDatos, intervalo);
         })

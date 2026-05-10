@@ -58,5 +58,29 @@
       "date": "11-04"
     }
   ],
+  "standings": [
+    {
+      "competition": "Primera División",
+      "last_match_date": "2026-05-09",
+      "table": [
+        { "pos": 1,  "team": "Colo-Colo",        "pts": 32, "gd": 18,  "is_audax": false },
+        { "pos": 2,  "team": "U. de Chile",       "pts": 28, "gd": 12,  "is_audax": false },
+        { "pos": 3,  "team": "U. Católica",       "pts": 25, "gd": 7,   "is_audax": false },
+        { "pos": 4,  "team": "Huachipato",        "pts": 22, "gd": 5,   "is_audax": false },
+        { "pos": 5,  "team": "Audax Italiano",    "pts": 19, "gd": -2,  "is_audax": true  },
+        { "pos": 6,  "team": "Cobresal",          "pts": 17, "gd": -4,  "is_audax": false },
+        { "pos": 7,  "team": "O'Higgins",         "pts": 16, "gd": -3,  "is_audax": false },
+        { "pos": 8,  "team": "D. La Serena",      "pts": 15, "gd": -6,  "is_audax": false },
+        { "pos": 9,  "team": "Deportes Iquique",  "pts": 14, "gd": -7,  "is_audax": false },
+        { "pos": 10, "team": "Everton",           "pts": 13, "gd": -8,  "is_audax": false },
+        { "pos": 11, "team": "Palestino",         "pts": 12, "gd": -9,  "is_audax": false },
+        { "pos": 12, "team": "Ñublense",          "pts": 11, "gd": -10, "is_audax": false },
+        { "pos": 13, "team": "Rangers",           "pts": 10, "gd": -11, "is_audax": false },
+        { "pos": 14, "team": "D. Antofagasta",    "pts": 9,  "gd": -13, "is_audax": false },
+        { "pos": 15, "team": "San Luis",          "pts": 8,  "gd": -15, "is_audax": false },
+        { "pos": 16, "team": "Dep. Limache",      "pts": 6,  "gd": -18, "is_audax": false }
+      ]
+    }
+  ],
   "updated_at": "2026-05-09"
 }

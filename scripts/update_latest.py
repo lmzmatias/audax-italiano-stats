@@ -22,6 +22,7 @@ from urllib.error import URLError, HTTPError
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "docs", "data", "latest.json")
 MAX_HISTORY = 10
+AUDAX_NAMES = ("audax", "italiano")
 
 AUDAX_TEAM_ID = 2329  # A. Italiano en api-sports.io
 
@@ -273,31 +274,105 @@ def fetch_history(serpapi_key):
 HISTORY_INTERVAL = 12 * 60 * 60  # 12 horas en segundos
 
 
+# ── API-Football: tabla de posiciones ─────────────────────────────────────────
+
+def fetch_standings(apifootball_key, season=2026):
+    """Obtiene tabla de posiciones de las ligas donde participa Audax (ID 2329)."""
+    # Ligas chilenas principales: Primera División = 265, Copa Chile = 266
+    LEAGUES = [
+        (265, "Primera División"),
+        (266, "Copa Chile"),
+    ]
+    result = []
+    for league_id, league_name in LEAGUES:
+        data = apifootball_get(apifootball_key, f"/standings?league={league_id}&season={season}")
+        if not data or data.get("errors"):
+            continue
+        response = data.get("response", [])
+        if not response:
+            continue
+        try:
+            standings_raw = response[0]["league"]["standings"]
+        except (KeyError, IndexError, TypeError):
+            continue
+
+        for group in standings_raw:
+            audax_in_group = any(
+                any(n in (t.get("team", {}).get("name", "").lower()) for n in AUDAX_NAMES)
+                for t in group
+            )
+            if not audax_in_group:
+                continue
+
+            table = []
+            last_date = ""
+            for t in group:
+                team_name = t.get("team", {}).get("name", "")
+                is_audax  = any(n in team_name.lower() for n in AUDAX_NAMES)
+                pts        = t.get("points", 0)
+                gd         = t.get("goalsDiff", 0)
+                pos        = t.get("rank", 0)
+                upd        = t.get("update", "")
+                if upd and upd > last_date:
+                    last_date = upd[:10]
+                table.append({
+                    "pos":      pos,
+                    "team":     team_name,
+                    "pts":      pts,
+                    "gd":       gd,
+                    "is_audax": is_audax,
+                })
+
+            if table:
+                result.append({
+                    "competition":     league_name,
+                    "last_match_date": last_date,
+                    "table":           table,
+                })
+            break  # solo el primer grupo que contenga a Audax
+
+    return result
+
+
 def run_once(serpapi_key, apifootball_key):
-    live_game = fetch_live(apifootball_key)
-    history   = fetch_history(serpapi_key)
+    live_game  = fetch_live(apifootball_key)
+    history    = fetch_history(serpapi_key)
+    standings  = fetch_standings(apifootball_key)
 
     last_game     = history[0] if len(history) > 0 else None
     previous_game = history[1] if len(history) > 1 else None
     extra_history = history[2:] if len(history) > 2 else []
+
+    # Preserve existing standings if API returned nothing (avoid wiping data)
+    out_path = os.path.abspath(OUTPUT_PATH)
+    existing = {}
+    if os.path.exists(out_path):
+        try:
+            with open(out_path, encoding="utf-8") as f:
+                existing = json.load(f)
+        except Exception:
+            pass
+    if not standings and existing.get("standings"):
+        standings = existing["standings"]
 
     result = {
         "live":       live_game,
         "last":       last_game,
         "previous":   previous_game,
         "history":    extra_history,
+        "standings":  standings,
         "updated_at": str(date.today()),
     }
 
-    out_path = os.path.abspath(OUTPUT_PATH)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     print("\nActualizado:", out_path)
-    print("  live:    ", live_game)
-    print("  last:    ", last_game)
-    print("  history: ", len(extra_history), "partidos adicionales")
-    print("  updated: ", result["updated_at"])
+    print("  live:      ", live_game)
+    print("  last:      ", last_game)
+    print("  history:   ", len(extra_history), "partidos adicionales")
+    print("  standings: ", len(standings), "competiciones")
+    print("  updated:   ", result["updated_at"])
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

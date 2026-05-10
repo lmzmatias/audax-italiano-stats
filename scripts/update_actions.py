@@ -154,9 +154,7 @@ def fetch_live(api_key):
     }
 
 
-def fetch_history(serpapi_key):
-    """Reutiliza la lógica de update_latest.py importándola."""
-    # Importar dinámicamente para no duplicar código
+def _load_update_latest():
     import importlib.util, pathlib
     spec = importlib.util.spec_from_file_location(
         "update_latest",
@@ -164,7 +162,15 @@ def fetch_history(serpapi_key):
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.fetch_history(serpapi_key)
+    return mod
+
+
+def fetch_history(serpapi_key):
+    return _load_update_latest().fetch_history(serpapi_key)
+
+
+def fetch_standings(apifootball_key):
+    return _load_update_latest().fetch_standings(apifootball_key)
 
 
 def load_json():
@@ -244,12 +250,21 @@ def main():
         previous_game = history[1] if len(history) > 1 else None
         extra_history = history[2:] if len(history) > 2 else []
 
-        current["last"]               = last_game
-        current["previous"]           = previous_game
-        current["history"]            = extra_history
+        current["last"]                = last_game
+        current["previous"]            = previous_game
+        current["history"]             = extra_history
         current["last_history_update"] = now.strftime(ISO_FMT)
-        save_json(current)
         print(f"  Historial actualizado: {len(history)} partidos.")
+
+        print("  Actualizando tabla de posiciones...")
+        standings = fetch_standings(apifootball_key)
+        if standings:
+            current["standings"] = standings
+            print(f"  Standings actualizados: {len(standings)} competiciones.")
+        elif not current.get("standings"):
+            current["standings"] = []
+
+        save_json(current)
     else:
         print(f"  Historial reciente (< {HISTORY_INTERVAL_MIN} min). Sin acción.")
         save_json(current)
