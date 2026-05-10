@@ -9,8 +9,8 @@
     "result": "LIVE",
     "status": "LIVE",
     "status_long": "Second Half",
-    "elapsed": 82,
-    "extra": null,
+    "elapsed": 90,
+    "extra": 5,
     "events": [
       {
         "minute": 2,
@@ -101,6 +101,24 @@
         "assist": null,
         "team": "A. Italiano",
         "is_audax": true
+      },
+      {
+        "minute": 84,
+        "extra": null,
+        "type": "yellow_card",
+        "player": "L. Alarcon",
+        "assist": null,
+        "team": "D. La Serena",
+        "is_audax": false
+      },
+      {
+        "minute": 90,
+        "extra": 3,
+        "type": "yellow_card",
+        "player": null,
+        "assist": null,
+        "team": "D. La Serena",
+        "is_audax": false
       }
     ],
     "date": "2026-05-09"
