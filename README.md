@@ -41,8 +41,8 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 
 ### Tablas de competiciones (nuevo en v3.0)
 - Contexto competitivo secundario: aparece debajo de los partidos, sin competir con el bloque principal
-- Se muestran solo las competiciones donde Audax participa actualmente
-- Si Audax no participa o la tabla no está disponible, no se muestra nada
+- Se muestran solo las competiciones donde Audax participa actualmente (LDP, CDL, SUD)
+- Si no hay datos cargados, el bloque no aparece
 - Si hay más de una tabla, se ordenan según la competición con partidos más recientes
 - Columnas: Pos, Equipo, PTS, DG
 - Vista por defecto: 3 equipos arriba de Audax + Audax + 3 equipos abajo (7 filas)
@@ -50,6 +50,9 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Audax resaltado muy levemente (fondo casi neutro + negrita leve)
 - En mobile las tablas arrancan colapsadas (accordion)
 - No hay colores fuertes ni verde Audax en las tablas
+
+**Actualización de standings:** se edita manualmente el campo `standings` en `docs/data/latest.json`
+después de cada jornada. Los scripts automáticos nunca sobreescriben ese campo.
 
 ## Qué NO incluye este proyecto
 

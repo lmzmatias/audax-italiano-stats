@@ -437,7 +437,7 @@
           var t = document.createElement('table');
           t.className = 'tabla-standings';
           var hrow = t.createTHead().insertRow();
-          ['Pos', 'Equipo', 'PTS', 'DG'].forEach(function(col) {
+          ['Pos', 'Equipo', 'J', 'PTS', 'DG'].forEach(function(col) {
             var th = document.createElement('th');
             th.textContent = col;
             hrow.appendChild(th);
@@ -447,7 +447,7 @@
             var tr = tbody.insertRow();
             if (r.is_audax) tr.className = 'audax-row';
             var dg = (r.gd >= 0 ? '+' : '') + r.gd;
-            [r.pos, r.team, r.pts, dg].forEach(function(val) {
+            [r.pos, r.team, r.pj, r.pts, dg].forEach(function(val) {
               tr.insertCell().textContent = val;
             });
           });
