@@ -1,6 +1,14 @@
 {
   "live": null,
   "last": {
+    "rival": "D. La Serena",
+    "score_audax": 3,
+    "score_rival": 2,
+    "result": "Victoria",
+    "status": "FT",
+    "date": "Vie, 09-05"
+  },
+  "previous": {
     "rival": "Vasco da Gama",
     "score_audax": 1,
     "score_rival": 2,
@@ -8,15 +16,15 @@
     "status": "FT",
     "date": "Mié, 06-05"
   },
-  "previous": {
-    "rival": "Barracas Central",
-    "score_audax": 1,
-    "score_rival": 1,
-    "result": "Empate",
-    "status": "FT",
-    "date": "Mar, 28-04"
-  },
   "history": [
+    {
+      "rival": "Barracas Central",
+      "score_audax": 1,
+      "score_rival": 1,
+      "result": "Empate",
+      "status": "FT",
+      "date": "Mar, 28-04"
+    },
     {
       "rival": "Deportes Limache",
       "score_audax": 2,
