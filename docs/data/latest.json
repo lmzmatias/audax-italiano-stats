@@ -1,29 +1,29 @@
 {
   "live": null,
   "last": {
-    "rival": "D. La Serena",
+    "rival": "U. Católica",
     "score_audax": 3,
-    "score_rival": 2,
-    "result": "Victoria",
+    "score_rival": 4,
+    "result": "Derrota",
     "status": "FT",
-    "date": "Vie, 09-05"
+    "date": "11-04"
   },
   "previous": {
     "rival": "Vasco da Gama",
-    "score_audax": 1,
-    "score_rival": 2,
-    "result": "Derrota",
+    "score_audax": 2,
+    "score_rival": 1,
+    "result": "Victoria",
     "status": "FT",
-    "date": "Mié, 06-05"
+    "date": "14-04"
   },
   "history": [
     {
-      "rival": "Barracas Central",
-      "score_audax": 1,
-      "score_rival": 1,
-      "result": "Empate",
+      "rival": "Huachipato",
+      "score_audax": 2,
+      "score_rival": 3,
+      "result": "Derrota",
       "status": "FT",
-      "date": "Mar, 28-04"
+      "date": "19-04"
     },
     {
       "rival": "Deportes Limache",
@@ -34,28 +34,20 @@
       "date": "24-04"
     },
     {
-      "rival": "Huachipato",
-      "score_audax": 2,
-      "score_rival": 3,
-      "result": "Derrota",
+      "rival": "Barracas Central",
+      "score_audax": 1,
+      "score_rival": 1,
+      "result": "Empate",
       "status": "FT",
-      "date": "19-04"
+      "date": "Mar, 28-04"
     },
     {
       "rival": "Vasco da Gama",
-      "score_audax": 2,
-      "score_rival": 1,
-      "result": "Victoria",
-      "status": "FT",
-      "date": "14-04"
-    },
-    {
-      "rival": "U. Católica",
-      "score_audax": 3,
-      "score_rival": 4,
+      "score_audax": 1,
+      "score_rival": 2,
       "result": "Derrota",
       "status": "FT",
-      "date": "11-04"
+      "date": "Mié, 06-05"
     }
   ],
   "standings": [
@@ -63,44 +55,221 @@
       "competition": "Liga Primera División",
       "last_match_date": "2026-05-09",
       "table": [
-        { "pos": 1,  "team": "Colo-Colo",          "pj": 11, "pts": 24, "gd": 7,   "is_audax": false },
-        { "pos": 2,  "team": "Limache",            "pj": 11, "pts": 21, "gd": 14,  "is_audax": false },
-        { "pos": 3,  "team": "Huachipato",         "pj": 11, "pts": 19, "gd": 4,   "is_audax": false },
-        { "pos": 4,  "team": "O'Higgins",          "pj": 11, "pts": 19, "gd": 1,   "is_audax": false },
-        { "pos": 5,  "team": "U. Católica",        "pj": 11, "pts": 17, "gd": 7,   "is_audax": false },
-        { "pos": 6,  "team": "U. de Chile",        "pj": 11, "pts": 17, "gd": 5,   "is_audax": false },
-        { "pos": 7,  "team": "Ñublense",           "pj": 11, "pts": 17, "gd": 2,   "is_audax": false },
-        { "pos": 8,  "team": "Coquimbo Unido",     "pj": 11, "pts": 16, "gd": 0,   "is_audax": false },
-        { "pos": 9,  "team": "Everton",            "pj": 11, "pts": 15, "gd": 2,   "is_audax": false },
-        { "pos": 10, "team": "La Serena",          "pj": 11, "pts": 14, "gd": -1,  "is_audax": false },
-        { "pos": 11, "team": "Palestino",          "pj": 11, "pts": 14, "gd": -4,  "is_audax": false },
-        { "pos": 12, "team": "U. de Concepción",   "pj": 11, "pts": 14, "gd": -10, "is_audax": false },
-        { "pos": 13, "team": "Audax Italiano",     "pj": 11, "pts": 11, "gd": -1,  "is_audax": true  },
-        { "pos": 14, "team": "Cobresal",           "pj": 11, "pts": 10, "gd": -6,  "is_audax": false },
-        { "pos": 15, "team": "Unión La Calera",    "pj": 11, "pts": 10, "gd": -11, "is_audax": false },
-        { "pos": 16, "team": "Deportes Concepción","pj": 11, "pts": 8,  "gd": -9,  "is_audax": false }
+        {
+          "pos": 1,
+          "team": "Colo-Colo",
+          "pj": 11,
+          "pts": 24,
+          "gd": 7,
+          "is_audax": false
+        },
+        {
+          "pos": 2,
+          "team": "Limache",
+          "pj": 11,
+          "pts": 21,
+          "gd": 14,
+          "is_audax": false
+        },
+        {
+          "pos": 3,
+          "team": "Huachipato",
+          "pj": 11,
+          "pts": 19,
+          "gd": 4,
+          "is_audax": false
+        },
+        {
+          "pos": 4,
+          "team": "O'Higgins",
+          "pj": 11,
+          "pts": 19,
+          "gd": 1,
+          "is_audax": false
+        },
+        {
+          "pos": 5,
+          "team": "U. Católica",
+          "pj": 11,
+          "pts": 17,
+          "gd": 7,
+          "is_audax": false
+        },
+        {
+          "pos": 6,
+          "team": "U. de Chile",
+          "pj": 11,
+          "pts": 17,
+          "gd": 5,
+          "is_audax": false
+        },
+        {
+          "pos": 7,
+          "team": "Ñublense",
+          "pj": 11,
+          "pts": 17,
+          "gd": 2,
+          "is_audax": false
+        },
+        {
+          "pos": 8,
+          "team": "Coquimbo Unido",
+          "pj": 11,
+          "pts": 16,
+          "gd": 0,
+          "is_audax": false
+        },
+        {
+          "pos": 9,
+          "team": "Everton",
+          "pj": 11,
+          "pts": 15,
+          "gd": 2,
+          "is_audax": false
+        },
+        {
+          "pos": 10,
+          "team": "La Serena",
+          "pj": 11,
+          "pts": 14,
+          "gd": -1,
+          "is_audax": false
+        },
+        {
+          "pos": 11,
+          "team": "Palestino",
+          "pj": 11,
+          "pts": 14,
+          "gd": -4,
+          "is_audax": false
+        },
+        {
+          "pos": 12,
+          "team": "U. de Concepción",
+          "pj": 11,
+          "pts": 14,
+          "gd": -10,
+          "is_audax": false
+        },
+        {
+          "pos": 13,
+          "team": "Audax Italiano",
+          "pj": 11,
+          "pts": 11,
+          "gd": -1,
+          "is_audax": true
+        },
+        {
+          "pos": 14,
+          "team": "Cobresal",
+          "pj": 11,
+          "pts": 10,
+          "gd": -6,
+          "is_audax": false
+        },
+        {
+          "pos": 15,
+          "team": "Unión La Calera",
+          "pj": 11,
+          "pts": 10,
+          "gd": -11,
+          "is_audax": false
+        },
+        {
+          "pos": 16,
+          "team": "Deportes Concepción",
+          "pj": 11,
+          "pts": 8,
+          "gd": -9,
+          "is_audax": false
+        }
       ]
     },
     {
       "competition": "Copa de la Liga · Grupo D",
       "last_match_date": "2026-05-12",
       "table": [
+<<<<<<< HEAD
         { "pos": 1, "team": "Audax Italiano",  "pj": 5, "pts": 10, "gd": 3,   "is_audax": true  },
         { "pos": 2, "team": "Unión La Calera", "pj": 5, "pts": 10, "gd": 2,   "is_audax": false },
         { "pos": 3, "team": "U. de Chile",     "pj": 5, "pts": 7,  "gd": 5,   "is_audax": false },
         { "pos": 4, "team": "D. La Serena",    "pj": 5, "pts": 1,  "gd": -10, "is_audax": false }
+=======
+        {
+          "pos": 1,
+          "team": "Audax Italiano",
+          "pj": 5,
+          "pts": 10,
+          "gd": 3,
+          "is_audax": true
+        },
+        {
+          "pos": 2,
+          "team": "U. de Chile",
+          "pj": 4,
+          "pts": 7,
+          "gd": 6,
+          "is_audax": false
+        },
+        {
+          "pos": 3,
+          "team": "Unión La Calera",
+          "pj": 4,
+          "pts": 7,
+          "gd": 1,
+          "is_audax": false
+        },
+        {
+          "pos": 4,
+          "team": "D. La Serena",
+          "pj": 5,
+          "pts": 1,
+          "gd": -10,
+          "is_audax": false
+        }
+>>>>>>> bd35722b2e93676aa3d0585aed3cae49eb48eb5f
       ]
     },
     {
       "competition": "Copa Sudamericana · Grupo G",
       "last_match_date": "2026-05-06",
       "table": [
-        { "pos": 1, "team": "Vasco da Gama",    "pj": 4, "pts": 7, "gd": 3,  "is_audax": false },
-        { "pos": 2, "team": "Club Olimpia",      "pj": 4, "pts": 7, "gd": 0,  "is_audax": false },
-        { "pos": 3, "team": "Audax Italiano",    "pj": 4, "pts": 4, "gd": -2, "is_audax": true  },
-        { "pos": 4, "team": "Barracas Central",  "pj": 4, "pts": 3, "gd": -1, "is_audax": false }
+        {
+          "pos": 1,
+          "team": "Vasco da Gama",
+          "pj": 4,
+          "pts": 7,
+          "gd": 3,
+          "is_audax": false
+        },
+        {
+          "pos": 2,
+          "team": "Club Olimpia",
+          "pj": 4,
+          "pts": 7,
+          "gd": 0,
+          "is_audax": false
+        },
+        {
+          "pos": 3,
+          "team": "Audax Italiano",
+          "pj": 4,
+          "pts": 4,
+          "gd": -2,
+          "is_audax": true
+        },
+        {
+          "pos": 4,
+          "team": "Barracas Central",
+          "pj": 4,
+          "pts": 3,
+          "gd": -1,
+          "is_audax": false
+        }
       ]
     }
   ],
-  "updated_at": "2026-05-09"
+  "updated_at": "2026-05-09",
+  "last_live_check": "2026-05-11T21:23",
+  "last_history_update": "2026-05-11T21:23"
 }
