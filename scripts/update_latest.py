@@ -255,7 +255,7 @@ def fetch_history(serpapi_key):
 
         finished = parse_serpapi_games(raw)
 
-        for p in reversed(finished):
+        for p in finished:
             if es_futuro(p["date"]):
                 print(f"  [ignorado futuro] {p['date']} vs {p['rival']}")
                 continue

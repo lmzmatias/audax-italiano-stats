@@ -30,6 +30,7 @@ Proyecto personal que muestra el estado actual del Audax Italiano con un lenguaj
 - Con partido en vivo activo: se muestra 1 partido FT debajo del bloque principal
 - Sin partido en vivo: se muestran 2 partidos FT debajo del bloque principal
 - Cada partido mantiene su mensaje irónico correspondiente
+- Ordenados del más reciente al más antiguo
 - Botón "Ver más desgracias": toggle que expande hasta 10 partidos y permite volver a la vista por defecto
 - Partidos futuros filtrados automáticamente
 
