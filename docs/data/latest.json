@@ -189,45 +189,10 @@
       "competition": "Copa de la Liga · Grupo D",
       "last_match_date": "2026-05-12",
       "table": [
-<<<<<<< HEAD
         { "pos": 1, "team": "Audax Italiano",  "pj": 5, "pts": 10, "gd": 3,   "is_audax": true  },
         { "pos": 2, "team": "Unión La Calera", "pj": 5, "pts": 10, "gd": 2,   "is_audax": false },
         { "pos": 3, "team": "U. de Chile",     "pj": 5, "pts": 7,  "gd": 5,   "is_audax": false },
         { "pos": 4, "team": "D. La Serena",    "pj": 5, "pts": 1,  "gd": -10, "is_audax": false }
-=======
-        {
-          "pos": 1,
-          "team": "Audax Italiano",
-          "pj": 5,
-          "pts": 10,
-          "gd": 3,
-          "is_audax": true
-        },
-        {
-          "pos": 2,
-          "team": "U. de Chile",
-          "pj": 4,
-          "pts": 7,
-          "gd": 6,
-          "is_audax": false
-        },
-        {
-          "pos": 3,
-          "team": "Unión La Calera",
-          "pj": 4,
-          "pts": 7,
-          "gd": 1,
-          "is_audax": false
-        },
-        {
-          "pos": 4,
-          "team": "D. La Serena",
-          "pj": 5,
-          "pts": 1,
-          "gd": -10,
-          "is_audax": false
-        }
->>>>>>> bd35722b2e93676aa3d0585aed3cae49eb48eb5f
       ]
     },
     {
