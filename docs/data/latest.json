@@ -39,7 +39,7 @@
       "score_rival": 1,
       "result": "Empate",
       "status": "FT",
-      "date": "Mar, 28-04"
+      "date": "28-04"
     },
     {
       "rival": "Vasco da Gama",
@@ -263,6 +263,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-12T20:11",
-  "last_history_update": "2026-05-12T20:11"
+  "last_live_check": "2026-05-13T13:26",
+  "last_history_update": "2026-05-13T13:26"
 }
