@@ -48,6 +48,14 @@
       "result": "Derrota",
       "status": "FT",
       "date": "Mié, 06-05"
+    },
+    {
+      "rival": "Coquimbo Unido",
+      "score_audax": 0,
+      "score_rival": 0,
+      "result": "Empate",
+      "status": "FT",
+      "date": "Mañana"
     }
   ],
   "standings": [
@@ -263,6 +271,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-13T21:22",
-  "last_history_update": "2026-05-13T21:22"
+  "last_live_check": "2026-05-14T12:24",
+  "last_history_update": "2026-05-14T12:24"
 }
