@@ -1,133 +1,8 @@
 {
-  "live": {
-    "fixture_id": 1505437,
-    "rival": "Coquimbo Unido",
-    "home": "Coquimbo Unido",
-    "away": "A. Italiano",
-    "score_audax": 0,
-    "score_rival": 3,
-    "result": "LIVE",
-    "status": "LIVE",
-    "status_long": "Second Half",
-    "elapsed": 58,
-    "extra": null,
-    "events": [
-      {
-        "minute": 30,
-        "extra": null,
-        "type": "goal",
-        "player": "G. Vadala",
-        "assist": "M. A. Mundaca Barraza",
-        "team": "Coquimbo Unido",
-        "is_audax": false
-      },
-      {
-        "minute": 38,
-        "extra": null,
-        "type": "yellow_card",
-        "player": "I. Fuenzalida",
-        "assist": null,
-        "team": "A. Italiano",
-        "is_audax": true
-      },
-      {
-        "minute": 45,
-        "extra": 3,
-        "type": "goal",
-        "player": "N. Johansen",
-        "assist": "J. Cornejo",
-        "team": "Coquimbo Unido",
-        "is_audax": false
-      },
-      {
-        "minute": 46,
-        "extra": null,
-        "type": "substitution",
-        "player": "M. Valdes",
-        "assist": "O. J. Rojas Munoz",
-        "team": "A. Italiano",
-        "is_audax": true
-      },
-      {
-        "minute": 48,
-        "extra": null,
-        "type": "yellow_card",
-        "player": "G. Chiaverano",
-        "assist": null,
-        "team": "A. Italiano",
-        "is_audax": true
-      },
-      {
-        "minute": 49,
-        "extra": null,
-        "type": "yellow_card",
-        "player": "B. Gazzolo",
-        "assist": null,
-        "team": "Coquimbo Unido",
-        "is_audax": false
-      },
-      {
-        "minute": 57,
-        "extra": null,
-        "type": "goal",
-        "player": "C. Zavala",
-        "assist": null,
-        "team": "Coquimbo Unido",
-        "is_audax": false
-      }
-    ],
-    "date": "2026-05-15"
-  },
-  "last": {
-    "rival": "Vasco da Gama",
-    "score_audax": 1,
-    "score_rival": 2,
-    "result": "Derrota",
-    "status": "FT",
-    "date": "Mié, 06-05"
-  },
-  "previous": {
-    "rival": "Barracas Central",
-    "score_audax": 1,
-    "score_rival": 1,
-    "result": "Empate",
-    "status": "FT",
-    "date": "28-04"
-  },
-  "history": [
-    {
-      "rival": "Deportes Limache",
-      "score_audax": 2,
-      "score_rival": 2,
-      "result": "Empate",
-      "status": "FT",
-      "date": "24-04"
-    },
-    {
-      "rival": "Huachipato",
-      "score_audax": 2,
-      "score_rival": 3,
-      "result": "Derrota",
-      "status": "FT",
-      "date": "19-04"
-    },
-    {
-      "rival": "Vasco da Gama",
-      "score_audax": 2,
-      "score_rival": 1,
-      "result": "Victoria",
-      "status": "FT",
-      "date": "14-04"
-    },
-    {
-      "rival": "U. Católica",
-      "score_audax": 3,
-      "score_rival": 4,
-      "result": "Derrota",
-      "status": "FT",
-      "date": "11-04"
-    }
-  ],
+  "live": null,
+  "last": null,
+  "previous": null,
+  "history": [],
   "standings": [
     {
       "competition": "Liga Primera División",
@@ -341,6 +216,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-15T21:19",
-  "last_history_update": "2026-05-15T19:34"
+  "last_live_check": "2026-05-16T13:00",
+  "last_history_update": "2026-05-16T13:00"
 }
