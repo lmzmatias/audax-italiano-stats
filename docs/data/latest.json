@@ -1,30 +1,22 @@
 {
   "live": null,
   "last": {
-    "rival": "Coquimbo Unido",
-    "score_audax": 0,
+    "rival": "Vasco da Gama",
+    "score_audax": 2,
+    "score_rival": 1,
+    "result": "Victoria",
+    "status": "FT",
+    "date": "14-04"
+  },
+  "previous": {
+    "rival": "Huachipato",
+    "score_audax": 2,
     "score_rival": 3,
     "result": "Derrota",
     "status": "FT",
-    "date": "Vie, 15-05"
-  },
-  "previous": {
-    "rival": "Vasco da Gama",
-    "score_audax": 1,
-    "score_rival": 2,
-    "result": "Derrota",
-    "status": "FT",
-    "date": "Mié, 06-05"
+    "date": "19-04"
   },
   "history": [
-    {
-      "rival": "Barracas Central",
-      "score_audax": 1,
-      "score_rival": 1,
-      "result": "Empate",
-      "status": "FT",
-      "date": "28-04"
-    },
     {
       "rival": "Deportes Limache",
       "score_audax": 2,
@@ -34,20 +26,28 @@
       "date": "24-04"
     },
     {
-      "rival": "Huachipato",
-      "score_audax": 2,
-      "score_rival": 3,
-      "result": "Derrota",
+      "rival": "Barracas Central",
+      "score_audax": 1,
+      "score_rival": 1,
+      "result": "Empate",
       "status": "FT",
-      "date": "19-04"
+      "date": "28-04"
     },
     {
       "rival": "Vasco da Gama",
-      "score_audax": 2,
-      "score_rival": 1,
-      "result": "Victoria",
+      "score_audax": 1,
+      "score_rival": 2,
+      "result": "Derrota",
       "status": "FT",
-      "date": "14-04"
+      "date": "Mié, 06-05"
+    },
+    {
+      "rival": "Coquimbo Unido",
+      "score_audax": 0,
+      "score_rival": 3,
+      "result": "Derrota",
+      "status": "FT",
+      "date": "Vie, 15-05"
     }
   ],
   "standings": [
@@ -263,6 +263,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-17T12:15",
-  "last_history_update": "2026-05-17T12:15"
+  "last_live_check": "2026-05-17T13:16",
+  "last_history_update": "2026-05-17T13:16"
 }
