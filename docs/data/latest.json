@@ -6,7 +6,7 @@
     "score_rival": 1,
     "result": "Victoria",
     "status": "FT",
-    "date": "14-04"
+    "date": "15-04"
   },
   "previous": {
     "rival": "Huachipato",
@@ -14,7 +14,7 @@
     "score_rival": 3,
     "result": "Derrota",
     "status": "FT",
-    "date": "19-04"
+    "date": "20-04"
   },
   "history": [
     {
@@ -23,7 +23,7 @@
       "score_rival": 2,
       "result": "Empate",
       "status": "FT",
-      "date": "24-04"
+      "date": "25-04"
     },
     {
       "rival": "Barracas Central",
@@ -31,7 +31,7 @@
       "score_rival": 1,
       "result": "Empate",
       "status": "FT",
-      "date": "28-04"
+      "date": "29-04"
     },
     {
       "rival": "Vasco da Gama",
@@ -39,7 +39,7 @@
       "score_rival": 2,
       "result": "Derrota",
       "status": "FT",
-      "date": "Mié, 06-05"
+      "date": "Jue, 07-05"
     },
     {
       "rival": "Coquimbo Unido",
@@ -47,7 +47,7 @@
       "score_rival": 3,
       "result": "Derrota",
       "status": "FT",
-      "date": "Vie, 15-05"
+      "date": "Sáb, 16-05"
     },
     {
       "rival": "Barracas Central",
@@ -271,6 +271,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-18T14:08",
-  "last_history_update": "2026-05-18T14:08"
+  "last_live_check": "2026-05-18T17:15",
+  "last_history_update": "2026-05-18T17:15"
 }
