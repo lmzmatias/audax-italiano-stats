@@ -1,8 +1,55 @@
 {
   "live": null,
-  "last": null,
-  "previous": null,
-  "history": [],
+  "last": {
+    "rival": "Huachipato",
+    "score_audax": 2,
+    "score_rival": 3,
+    "result": "Derrota",
+    "status": "FT",
+    "date": "19-04"
+  },
+  "previous": {
+    "rival": "Deportes Limache",
+    "score_audax": 2,
+    "score_rival": 2,
+    "result": "Empate",
+    "status": "FT",
+    "date": "24-04"
+  },
+  "history": [
+    {
+      "rival": "Barracas Central",
+      "score_audax": 1,
+      "score_rival": 1,
+      "result": "Empate",
+      "status": "FT",
+      "date": "28-04"
+    },
+    {
+      "rival": "Vasco da Gama",
+      "score_audax": 1,
+      "score_rival": 2,
+      "result": "Derrota",
+      "status": "FT",
+      "date": "Mié, 06-05"
+    },
+    {
+      "rival": "Coquimbo Unido",
+      "score_audax": 0,
+      "score_rival": 3,
+      "result": "Derrota",
+      "status": "FT",
+      "date": "Vie, 15-05"
+    },
+    {
+      "rival": "Barracas Central",
+      "score_audax": 2,
+      "score_rival": 0,
+      "result": "Victoria",
+      "status": "FT",
+      "date": "Ayer"
+    }
+  ],
   "standings": [
     {
       "competition": "Liga Primera División",
@@ -216,6 +263,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-20T18:48",
-  "last_history_update": "2026-05-20T18:48"
+  "last_live_check": "2026-05-20T19:57",
+  "last_history_update": "2026-05-20T19:57"
 }
