@@ -31,7 +31,7 @@
       "score_rival": 2,
       "result": "Derrota",
       "status": "FT",
-      "date": "Mié, 06-05"
+      "date": "06-05"
     },
     {
       "rival": "Coquimbo Unido",
@@ -47,7 +47,7 @@
       "score_rival": 0,
       "result": "Victoria",
       "status": "FT",
-      "date": "Ayer"
+      "date": "Mar, 19-05"
     }
   ],
   "standings": [
@@ -263,6 +263,6 @@
     }
   ],
   "updated_at": "2026-05-09",
-  "last_live_check": "2026-05-20T19:57",
-  "last_history_update": "2026-05-20T19:57"
+  "last_live_check": "2026-05-21T12:31",
+  "last_history_update": "2026-05-21T12:31"
 }
